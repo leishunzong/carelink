@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "账户与安全",
+  "usingComponents": {
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-switch": "@vant/weapp/switch/index"
+  }
+}

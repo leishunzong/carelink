@@ -1,0 +1,20 @@
+{
+  "name": "carelink-caregiver-miniprogram",
+  "version": "1.0.0",
+  "description": "护联护工端小程序",
+  "main": "app.js",
+  "scripts": {
+    "dev": "echo '请在微信开发者工具中打开项目'",
+    "build": "echo '请在微信开发者工具中构建 npm'"
+  },
+  "keywords": [
+    "miniprogram",
+    "caregiver",
+    "carelink"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@vant/weapp": "^1.11.6"
+  }
+}

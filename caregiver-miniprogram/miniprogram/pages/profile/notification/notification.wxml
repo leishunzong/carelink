@@ -1,0 +1,29 @@
+<!--pages/profile/notification/notification.wxml-->
+<view class="container">
+  <van-cell-group title="订单通知">
+    <van-cell title="新订单提醒">
+      <van-switch checked="{{notifications.newOrder}}" bind:change="onNotificationChange" data-key="newOrder" />
+    </van-cell>
+    <van-cell title="订单状态变更">
+      <van-switch checked="{{notifications.orderStatus}}" bind:change="onNotificationChange" data-key="orderStatus" />
+    </van-cell>
+  </van-cell-group>
+
+  <van-cell-group title="服务通知">
+    <van-cell title="服务提醒">
+      <van-switch checked="{{notifications.serviceReminder}}" bind:change="onNotificationChange" data-key="serviceReminder" />
+    </van-cell>
+    <van-cell title="客户评价">
+      <van-switch checked="{{notifications.evaluation}}" bind:change="onNotificationChange" data-key="evaluation" />
+    </van-cell>
+  </van-cell-group>
+
+  <van-cell-group title="系统通知">
+    <van-cell title="系统公告">
+      <van-switch checked="{{notifications.announcement}}" bind:change="onNotificationChange" data-key="announcement" />
+    </van-cell>
+    <van-cell title="活动推送">
+      <van-switch checked="{{notifications.promotion}}" bind:change="onNotificationChange" data-key="promotion" />
+    </van-cell>
+  </van-cell-group>
+</view>

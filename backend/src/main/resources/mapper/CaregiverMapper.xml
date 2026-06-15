@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caregiver.carelink.mapper.CaregiverMapper">
+
+    <!-- 分页搜索护工（支持关联统计表排序） -->
+    <select id="searchCaregivers" resultType="com.caregiver.carelink.entity.Caregiver">
+        SELECT c.*
+        FROM caregiver c
+        LEFT JOIN caregiver_stats s ON c.id = s.caregiver_id
+        WHERE c.city_code = #{cityCode}
+          AND c.verify_status = 1
+        <if test="gender != null">
+            AND c.gender = #{gender}
+        </if>
+        <if test="nameKeyword != null and nameKeyword != ''">
+            AND c.real_name LIKE CONCAT('%', #{nameKeyword}, '%')
+        </if>
+        <if test="minBirthday != null">
+            AND c.birthday &gt;= #{minBirthday}
+        </if>
+        <if test="maxBirthday != null">
+            AND c.birthday &lt;= #{maxBirthday}
+        </if>
+        <if test="minWorkYears != null">
+            AND c.work_years &gt;= #{minWorkYears}
+        </if>
+        <if test="maxWorkYears != null">
+            AND c.work_years &lt;= #{maxWorkYears}
+        </if>
+        <if test="education != null and education != ''">
+            AND c.education = #{education}
+        </if>
+        <if test="packageCategory != null">
+            AND EXISTS (
+                SELECT 1
+                FROM caregiver_service_config cfg
+                JOIN service_package sp
+                  ON sp.id = cfg.package_id
+                 AND sp.status = 1
+                WHERE cfg.caregiver_id = c.id
+                  AND sp.category = #{packageCategory}
+            )
+        </if>
+        ORDER BY
+        <choose>
+            <when test="sortField == 'orderCount'">
+                COALESCE(s.order_count, 0) ${sortOrder}, c.create_time DESC
+            </when>
+            <when test="sortField == 'goodReviewRate'">
+                COALESCE(s.good_review_rate, 0) ${sortOrder}, c.create_time DESC
+            </when>
+            <when test="sortField == 'workYears'">
+                c.work_years ${sortOrder}, c.create_time DESC
+            </when>
+            <otherwise>
+                c.create_time DESC
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

@@ -1,0 +1,26 @@
+<view class="page">
+  <scroll-view class="list" scroll-y enhanced bindscrolltolower="onReachBottom">
+    <view class="card" wx:for="{{list}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <image class="avatar" src="{{item.avatar || ''}}" mode="aspectFill" />
+      <view class="body">
+        <view class="head">
+          <text class="name">{{item.name}}</text>
+          <view class="distance">{{item.distance}}</view>
+        </view>
+        <view class="row">
+          <text class="star">★ {{item.rating}}</text>
+          <text class="exp">{{item.experience}}</text>
+        </view>
+        <view class="tags">
+          <text class="tag" wx:for="{{item.services}}" wx:for-item="s" wx:key="*this">{{s}}</text>
+        </view>
+        <view class="foot">
+          <text>完单 {{item.completedOrders}}</text>
+          <text>好评 {{item.positiveRate}}%</text>
+        </view>
+      </view>
+      <text class="arrow">›</text>
+    </view>
+    <view class="empty" wx:if="{{!loading && list.length === 0}}">暂无附近护工</view>
+  </scroll-view>
+</view>

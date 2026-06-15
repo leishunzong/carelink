@@ -1,0 +1,247 @@
+page {
+  background: #f3f4f6;
+  min-height: 100vh;
+}
+
+.profile-container {
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+}
+
+/* 顶部背景 */
+.header-bg {
+  height: 256rpx;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+/* 个人信息卡片 */
+.user-card {
+  margin: -128rpx 32rpx 32rpx;
+  background: white;
+  border-radius: 32rpx;
+  padding: 48rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.06);
+}
+
+.user-header {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 32rpx;
+  position: relative;
+}
+
+.avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  border: 8rpx solid white;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+}
+
+.avatar-placeholder {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-text {
+  font-size: 64rpx;
+  font-weight: 600;
+  color: white;
+}
+
+.user-info {
+  margin-left: 32rpx;
+  flex: 1;
+  min-width: 0;
+}
+
+.name-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.user-name {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #1f2937;
+  margin-right: 16rpx;
+}
+
+.status-badge {
+  padding: 4rpx 16rpx;
+  border-radius: 24rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+.status-approved {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.status-pending {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.status-rejected {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.user-phone {
+  font-size: 28rpx;
+  color: #6b7280;
+  display: block;
+  margin-bottom: 24rpx;
+}
+
+.user-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8rpx 32rpx;
+}
+
+.detail-item {
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.detail-item .value {
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.arrow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 48rpx;
+  color: #d1d5db;
+  font-weight: 300;
+}
+
+/* 统计数据 */
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32rpx;
+  padding-top: 32rpx;
+  border-top: 1rpx solid #e5e7eb;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 48rpx;
+  font-weight: 700;
+  margin-bottom: 8rpx;
+}
+
+.stat-value.green {
+  color: #10b981;
+}
+
+.stat-value.blue {
+  color: #3b82f6;
+}
+
+.stat-value.purple {
+  color: #a855f7;
+}
+
+.stat-value.red {
+  color: #ef4444;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+/* 更多功能 */
+.more-section {
+  padding: 0 32rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #6b7280;
+  margin-bottom: 24rpx;
+  padding: 0 16rpx;
+}
+
+.menu-card {
+  background: white;
+  border-radius: 24rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 16rpx rgba(0, 0, 0, 0.04);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 32rpx;
+  border-bottom: 1rpx solid #f3f4f6;
+  transition: background-color 0.2s;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item:active {
+  background-color: #f9fafb;
+}
+
+.icon-box {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 32rpx;
+  flex-shrink: 0;
+}
+
+.icon-box .icon {
+  font-size: 48rpx;
+}
+
+.icon-purple { background: #faf5ff; }
+.icon-blue { background: #eff6ff; }
+.icon-gray { background: #f3f4f6; }
+.icon-orange { background: #fff7ed; }
+.icon-green { background: #f0fdf4; }
+
+.purple { color: #a855f7; }
+.blue { color: #3b82f6; }
+.gray { color: #6b7280; }
+.orange { color: #f97316; }
+.green { color: #10b981; }
+
+.menu-label {
+  flex: 1;
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.menu-arrow {
+  font-size: 48rpx;
+  color: #d1d5db;
+  font-weight: 300;
+}
+
+/* 退出登录 */
+.logout-section {
+  padding: 40rpx 32rpx 80rpx;
+}

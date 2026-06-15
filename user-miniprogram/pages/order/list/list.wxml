@@ -1,0 +1,104 @@
+<view class="page">
+  <!-- 服务包分类筛选 -->
+  <scroll-view class="filter-row" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="filter-inner">
+      <view class="filter-tab {{selectedCategory === item.id ? 'active' : ''}}" wx:for="{{categoryList}}" wx:key="id" data-id="{{item.id}}" bindtap="onCategory">{{item.name}}</view>
+    </view>
+  </scroll-view>
+
+  <!-- 订单状态筛选 -->
+  <scroll-view class="filter-row status-row" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="filter-inner">
+      <view class="filter-tab {{selectedStatus === item.value ? 'active' : ''}}" wx:for="{{statusTabs}}" wx:key="value" data-value="{{item.value}}" bindtap="onStatus">{{item.label}}</view>
+    </view>
+  </scroll-view>
+
+  <scroll-view class="list" scroll-y enhanced show-scrollbar="{{false}}" bindscrolltolower="onReachBottom">
+    <view class="card" wx:for="{{list}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="card-head">
+        <view class="head-left">
+          <text class="pkg-name">{{item.packageName}}</text>
+          <text class="order-no">订单号：{{item.orderNo}}</text>
+        </view>
+        <text class="status status-{{item.status}}">{{item.statusText}}</text>
+      </view>
+      <view class="card-body">
+        <view class="body-row">
+          <text class="body-label">护工：</text>
+          <text class="body-value">{{item.caregiverName || '待分配'}}</text>
+        </view>
+        <view class="body-row">
+          <text class="body-label">服务规格：</text>
+          <text class="body-value">{{item.billingText}} × {{item.buyQuantity}}</text>
+        </view>
+        <view class="body-row">
+          <text class="body-label">预约时间：</text>
+          <text class="body-value">{{item.expectStartTimeFmt}}</text>
+        </view>
+        <view class="body-row body-row-addr">
+          <text class="body-label">服务地址：</text>
+          <text class="body-value clamp">{{item.detailAddress || '-'}}</text>
+        </view>
+      </view>
+      <view class="card-foot">
+        <view class="foot-left">
+          <text class="foot-label">订单金额</text>
+          <text class="amount">¥{{item.totalAmount}}</text>
+        </view>
+        <view class="foot-actions">
+          <!-- 列表卡片仅保留 1 个主操作按钮，订单金额正常显示；详情页仍为多按钮 -->
+          <block wx:if="{{item.status === 1}}">
+            <button class="btn-primary-sm" catchtap="pay" data-id="{{item.id}}">前往支付</button>
+          </block>
+          <block wx:elif="{{item.status === 2}}">
+            <button class="btn-primary-sm" catchtap="contactService">联系客服</button>
+          </block>
+          <block wx:elif="{{item.status === 3}}">
+            <button class="btn-primary-sm" catchtap="contactCaregiver" data-id="{{item.id}}">联系护工</button>
+          </block>
+          <block wx:elif="{{item.status === 4}}">
+            <button class="btn-primary-sm btn-disabled">服务进行中</button>
+          </block>
+          <block wx:elif="{{item.status === 5}}">
+            <button class="btn-primary-sm" catchtap="complete" data-id="{{item.id}}">确认完成</button>
+          </block>
+          <block wx:elif="{{item.status === 6}}">
+            <button wx:if="{{!item.isReviewed}}" class="btn-primary-sm" catchtap="goReview" data-id="{{item.id}}" data-orderno="{{item.orderNo}}" data-packagename="{{item.packageName}}" data-caregivername="{{item.caregiverName}}">评价护工</button>
+            <button wx:else class="btn-primary-sm btn-disabled">已评价</button>
+          </block>
+          <block wx:else>
+            <button class="btn-primary-sm" catchtap="goDetail" data-id="{{item.id}}">查看详情</button>
+          </block>
+        </view>
+      </view>
+    </view>
+    <view class="empty" wx:if="{{!loading && list.length === 0}}">
+      <text class="empty-icon">📋</text>
+      <text class="empty-text">暂无订单</text>
+    </view>
+    <view class="loading-tip" wx:if="{{loading}}">加载中...</view>
+    <view class="no-more" wx:if="{{!loading && list.length > 0 && noMore}}">没有更多了</view>
+  </scroll-view>
+
+  <!-- 确认取消弹窗 -->
+  <view class="modal-mask" wx:if="{{showCancelModal}}" catchtap="hideCancelModal"></view>
+  <view class="modal-box" wx:if="{{showCancelModal}}">
+    <text class="modal-title">确认取消订单</text>
+    <text class="modal-desc">确定要取消订单吗？</text>
+    <view class="modal-actions">
+      <button class="modal-btn ghost" bindtap="hideCancelModal">取消</button>
+      <button class="modal-btn danger" bindtap="confirmCancel">确认取消</button>
+    </view>
+  </view>
+
+  <!-- 确认完成弹窗 -->
+  <view class="modal-mask" wx:if="{{showCompleteModal}}" catchtap="hideCompleteModal"></view>
+  <view class="modal-box" wx:if="{{showCompleteModal}}">
+    <text class="modal-title">订单完成</text>
+    <text class="modal-desc">服务已完成，感谢您的使用！</text>
+    <view class="modal-actions">
+      <button class="modal-btn ghost" bindtap="confirmCompleteOnly">确认</button>
+      <button class="modal-btn primary" bindtap="goReviewFromModal">评价</button>
+    </view>
+  </view>
+</view>

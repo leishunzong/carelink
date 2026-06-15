@@ -1,0 +1,142 @@
+<view class="page">
+  <!-- 状态区 -->
+  <view class="status-section">
+    <image class="status-icon" src="{{statusInfo.icon}}" mode="aspectFit"></image>
+    <text class="status-text">{{statusInfo.text}}</text>
+    <text class="status-desc">{{statusDesc}}</text>
+  </view>
+
+  <!-- 订单信息 -->
+  <view class="block">
+    <text class="block-title">订单信息</text>
+    <view class="info-row"><text class="info-label">订单编号</text><text class="info-value">{{detail.orderNo}}</text></view>
+    <view class="info-row"><text class="info-label">订单类型</text><text class="info-value">{{detail.orderTypeText}}</text></view>
+    <view class="info-row"><text class="info-label">下单时间</text><text class="info-value">{{detail.createTimeFmt}}</text></view>
+    <view class="info-row" wx:if="{{detail.realStartTime}}"><text class="info-label">实际开始</text><text class="info-value">{{detail.realStartTimeFmt}}</text></view>
+    <view class="info-row" wx:if="{{detail.finishTime}}"><text class="info-label">完成时间</text><text class="info-value">{{detail.finishTimeFmt}}</text></view>
+  </view>
+
+  <!-- 服务信息 -->
+  <view class="block">
+    <text class="block-title">服务信息</text>
+    <view class="info-row"><text class="info-label">服务项目</text><text class="info-value">{{detail.packageName}}</text></view>
+    <view class="info-row"><text class="info-label">计费方式</text><text class="info-value">{{detail.billingText}}</text></view>
+    <view class="info-row"><text class="info-label">服务数量</text><text class="info-value">{{detail.buyQuantity}}{{detail.billingUnit}}</text></view>
+    <view class="info-row"><text class="info-label">单价</text><text class="info-value">¥{{detail.unitPrice}}</text></view>
+    <view class="info-row"><text class="info-label">预约上门时间</text><text class="info-value">{{detail.expectStartTimeFmt}}</text></view>
+  </view>
+
+  <!-- 护工信息（已派单时） -->
+  <view class="block" wx:if="{{detail.caregiverName}}">
+    <text class="block-title">护工信息</text>
+    <view class="caregiver-row" bindtap="goCaregiver" data-id="{{detail.caregiverId}}">
+      <image class="caregiver-avatar" src="{{detail.caregiverAvatar || ''}}" mode="aspectFill" />
+      <view class="caregiver-info">
+        <text class="caregiver-name">{{detail.caregiverName}}</text>
+        <text class="caregiver-phone">{{detail.caregiverPhone || ''}}</text>
+      </view>
+      <view class="caregiver-btn" catchtap="contactCaregiver">联系</view>
+    </view>
+  </view>
+
+  <!-- 联系人信息 -->
+  <view class="block">
+    <text class="block-title">联系人信息</text>
+    <view class="info-row"><text class="info-label">姓名</text><text class="info-value">{{detail.contactName}}</text></view>
+    <view class="info-row"><text class="info-label">电话</text><text class="info-value">{{detail.contactPhone}}</text></view>
+  </view>
+
+  <!-- 被照护人信息 -->
+  <view class="block">
+    <text class="block-title">被照护人信息</text>
+    <view class="info-row"><text class="info-label">姓名</text><text class="info-value">{{detail.clientName}}</text></view>
+    <view class="info-row"><text class="info-label">性别</text><text class="info-value">{{detail.clientGenderText}}</text></view>
+    <view class="info-row"><text class="info-label">年龄</text><text class="info-value">{{detail.clientAge}}岁</text></view>
+    <view class="info-row" wx:if="{{detail.clientHeight || detail.clientWeight}}"><text class="info-label">身高/体重</text><text class="info-value">{{detail.clientHeight}}cm / {{detail.clientWeight}}kg</text></view>
+    <view class="info-row" wx:if="{{detail.intellectStatus}}"><text class="info-label">智力状态</text><text class="info-value">{{detail.intellectStatus}}</text></view>
+    <view class="info-row" wx:if="{{detail.selfCareAbility}}"><text class="info-label">自理能力</text><text class="info-value">{{detail.selfCareAbility}}</text></view>
+    <view class="info-desc" wx:if="{{detail.medicalHistory}}"><text class="info-label">病史</text><text class="info-value">{{detail.medicalHistory}}</text></view>
+    <view class="info-desc" wx:if="{{detail.remarks}}"><text class="info-label">备注</text><text class="info-value">{{detail.remarks}}</text></view>
+  </view>
+
+  <!-- 服务地址 -->
+  <view class="block">
+    <text class="block-title">服务地址</text>
+    <view class="addr-row"><image class="loc-icon" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E5%AE%9A%E4%BD%8D-%E4%BD%8D%E7%BD%AE.png" mode="aspectFit"></image> {{detail.fullAddress}}</view>
+  </view>
+
+  <!-- 护工要求 + 匹配半径（仅系统匹配） -->
+  <view class="block" wx:if="{{detail.orderType === 1}}">
+    <text class="block-title">护工要求</text>
+    <view class="info-row"><text class="info-label">护工性别</text><text class="info-value">{{detail.reqGenderText}}</text></view>
+    <view class="info-row"><text class="info-label">从业年限</text><text class="info-value">{{detail.reqWorkYearsText}}</text></view>
+    <view class="info-row"><text class="info-label">籍贯要求</text><text class="info-value">{{detail.reqNativePlace || '不限'}}</text></view>
+    <view class="info-desc" wx:if="{{detail.specialRemark}}"><text class="info-label">特殊要求</text><text class="info-value">{{detail.specialRemark}}</text></view>
+  </view>
+  <view class="block" wx:if="{{detail.orderType === 1 && detail.matchingRadius}}">
+    <text class="block-title">匹配半径</text>
+    <view class="info-row"><text class="info-label">系统匹配范围</text><text class="info-value">{{detail.matchingRadiusText}}</text></view>
+  </view>
+
+  <!-- 费用明细 -->
+  <view class="block">
+    <text class="block-title">费用明细</text>
+    <view class="info-row"><text class="info-label">服务费用</text><text class="info-value">¥{{detail.totalAmount}}</text></view>
+    <view class="info-row total-row"><text class="info-label">实付金额</text><text class="info-value amount">¥{{detail.totalAmount}}</text></view>
+  </view>
+
+  <!-- 取消信息（已取消时） -->
+  <view class="block" wx:if="{{detail.status === 7 && detail.cancelReason}}">
+    <text class="block-title">取消信息</text>
+    <view class="info-row"><text class="info-label">取消时间</text><text class="info-value">{{detail.cancelTimeFmt}}</text></view>
+    <view class="info-desc"><text class="info-label">取消原因</text><text class="info-value">{{detail.cancelReason}}</text></view>
+  </view>
+
+  <!-- 底部操作 -->
+  <view class="bottom-bar" wx:if="{{showBottomBar}}">
+    <block wx:if="{{detail.status === 1}}">
+      <button class="btn-ghost" bindtap="cancel">取消订单</button>
+      <button class="btn-primary" bindtap="pay">前往支付</button>
+    </block>
+    <block wx:elif="{{detail.status === 2}}">
+      <button class="btn-ghost" bindtap="cancel">取消订单</button>
+      <button class="btn-primary" bindtap="contactService">联系客服</button>
+    </block>
+    <block wx:elif="{{detail.status === 3}}">
+      <button class="btn-ghost" bindtap="cancel">取消订单</button>
+      <button class="btn-primary" bindtap="contactCaregiver">联系护工</button>
+    </block>
+    <block wx:elif="{{detail.status === 4}}">
+      <button class="btn-primary disabled">服务进行中</button>
+    </block>
+    <block wx:elif="{{detail.status === 5}}">
+      <button class="btn-primary" bindtap="complete">确认完成</button>
+    </block>
+    <block wx:elif="{{detail.status === 6}}">
+      <button wx:if="{{!isReviewed}}" class="btn-primary" bindtap="goReview">评价护工</button>
+      <button wx:else class="btn-secondary disabled">已评价</button>
+    </block>
+  </view>
+
+  <!-- 确认取消弹窗 -->
+  <view class="modal-mask" wx:if="{{showCancelModal}}" catchtap="hideCancelModal"></view>
+  <view class="modal-box" wx:if="{{showCancelModal}}">
+    <text class="modal-title">确认取消订单</text>
+    <text class="modal-desc">确定要取消订单吗？</text>
+    <view class="modal-actions">
+      <button class="modal-btn ghost" bindtap="hideCancelModal">取消</button>
+      <button class="modal-btn danger" bindtap="confirmCancel">确认取消</button>
+    </view>
+  </view>
+
+  <!-- 确认完成弹窗 -->
+  <view class="modal-mask" wx:if="{{showCompleteModal}}" catchtap="hideCompleteModal"></view>
+  <view class="modal-box" wx:if="{{showCompleteModal}}">
+    <text class="modal-title">确认完成</text>
+    <text class="modal-desc">确认服务已完成？</text>
+    <view class="modal-actions">
+      <button class="modal-btn ghost" bindtap="hideCompleteModal">取消</button>
+      <button class="modal-btn primary" bindtap="confirmCompleteOnly">确认</button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,112 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #3B82F6 0%, #2563eb 100%);
+  position: relative;
+  overflow: visible;
+}
+.bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+}
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+}
+.circle-1 { width: 512rpx; height: 512rpx; top: -128rpx; right: -128rpx; }
+.circle-2 { width: 384rpx; height: 384rpx; bottom: -96rpx; left: -96rpx; }
+
+.content {
+  position: relative;
+  z-index: 1;
+  padding: 160rpx 64rpx 80rpx;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title-wrap { text-align: center; margin-bottom: 64rpx; }
+.logo {
+  width: 160rpx;
+  height: 160rpx;
+  background: #fff;
+  border-radius: 50%;
+  margin: 0 auto 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 80rpx;
+}
+.title {
+  display: block;
+  font-size: 56rpx;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 16rpx;
+}
+.subtitle {
+  display: block;
+  font-size: 28rpx;
+  color: rgba(255,255,255,0.85);
+}
+
+.form {
+  width: 100%;
+  background: rgba(255,255,255,0.95);
+  border-radius: 32rpx;
+  padding: 48rpx 40rpx;
+  box-shadow: 0 16rpx 48rpx rgba(0,0,0,0.15);
+}
+.field { margin-bottom: 36rpx; }
+.label {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 12rpx;
+}
+.input-box {
+  display: flex;
+  align-items: center;
+  background: #f9fafb;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  height: 88rpx;
+}
+.field-icon { font-size: 36rpx; margin-right: 16rpx; color: #9ca3af; }
+.input {
+  flex: 1;
+  height: 88rpx;
+  font-size: 30rpx;
+}
+.eye-wrap {
+  padding: 8rpx 12rpx;
+  margin-left: 8rpx;
+}
+.eye-icon {
+  font-size: 26rpx;
+  color: #3B82F6;
+}
+
+.forgot-wrap { text-align: right; margin-bottom: 32rpx; }
+.forgot { font-size: 26rpx; color: #6b7280; }
+
+.submit-btn {
+  width: 100% !important;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: linear-gradient(90deg, #3B82F6 0%, #2563eb 100%) !important;
+  color: #fff !important;
+  border: none;
+  border-radius: 44rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  margin-bottom: 32rpx;
+}
+.submit-btn:active { opacity: 0.9; }
+
+.footer { text-align: center; }
+.link { font-size: 28rpx; color: #3B82F6; font-weight: 500; }

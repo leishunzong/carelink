@@ -1,0 +1,95 @@
+<!--pages/service/evaluation-list/evaluation-list.wxml-->
+<view class="container">
+  <!-- 评分概览 -->
+  <view class="rating-summary">
+    <view class="summary-left">
+      <view class="rating-score">{{averageRating}}</view>
+      <van-rate 
+        value="{{averageRating}}" 
+        readonly
+        allow-half
+        size="{{16}}"
+        color="#ff9800"
+      />
+      <view class="rating-count">共 {{reviewCount}} 条评价</view>
+    </view>
+    <view class="summary-right">
+      <view class="good-rate">
+        <text class="rate-value">{{goodReviewRate}}%</text>
+        <text class="rate-label">好评率</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <van-tabs 
+      active="{{activeTab}}" 
+      bind:change="onTabChange"
+      color="#1989fa"
+    >
+      <van-tab title="全部" name="all"></van-tab>
+      <van-tab title="好评" name="good"></van-tab>
+      <van-tab title="差评" name="bad"></van-tab>
+    </van-tabs>
+  </view>
+
+  <!-- 评价列表 -->
+  <view class="evaluation-list">
+    <block wx:for="{{reviewList}}" wx:key="id">
+      <view class="evaluation-item">
+        <view class="evaluation-header">
+          <view class="user-info">
+            <image 
+              class="user-avatar" 
+              src="{{item.isAnonymous ? '/images/default-avatar.png' : (item.avatar || '/images/default-avatar.png')}}" 
+              mode="aspectFill"
+            />
+            <view class="user-detail">
+              <view class="user-name">{{item.isAnonymous ? '匿名用户' : item.nickname}}</view>
+              <view class="eval-time">{{item.createTime}}</view>
+            </view>
+          </view>
+          <van-rate 
+            value="{{item.stars}}" 
+            readonly
+            size="{{14}}"
+            color="#ff9800"
+          />
+        </view>
+
+        <view class="evaluation-content">{{item.content}}</view>
+
+        <!-- 评价标签 -->
+        <view wx:if="{{item.tags && item.tags.length > 0}}" class="evaluation-tags">
+          <block wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">
+            <van-tag plain type="{{item.type === 1 ? 'success' : 'danger'}}" size="medium" custom-style="margin-right: 8rpx; margin-bottom: 8rpx;">{{tag}}</van-tag>
+          </block>
+        </view>
+
+        <!-- 订单信息 -->
+        <view class="order-info">
+          <view class="order-item">
+            <van-icon name="orders-o" />
+            <text>订单号：{{item.orderNo}}</text>
+          </view>
+          <view wx:if="{{item.serviceDate}}" class="order-item">
+            <van-icon name="clock-o" />
+            <text>服务日期：{{item.serviceDate}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 空状态 -->
+  <van-empty 
+    wx:if="{{!loading && reviewList.length === 0}}"
+    description="暂无评价"
+  />
+
+  <!-- 加载更多 -->
+  <view wx:if="{{loading}}" class="load-more">
+    <van-loading size="20px">加载中...</van-loading>
+  </view>
+</view>

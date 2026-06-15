@@ -1,0 +1,24 @@
+<view class="page">
+  <scroll-view class="tabs-wrap" scroll-x>
+    <view class="tab {{selectedType === item.id ? 'active' : ''}}" wx:for="{{typeList}}" wx:key="id" data-id="{{item.id}}" bindtap="onType">{{item.label}}</view>
+  </scroll-view>
+  <scroll-view class="list" scroll-y enhanced bindscrolltolower="onReachBottom">
+    <view class="card" wx:for="{{filteredList}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="head">
+        <text class="order-no">订单号 {{item.orderNo}}</text>
+        <text class="type {{item.type}}">{{item.type === 'positive' ? '好评' : '差评'}}</text>
+      </view>
+      <view class="row">
+        <text class="caregiver">{{item.caregiverName}}</text>
+        <text class="service">{{item.serviceName}}</text>
+      </view>
+      <view class="stars">★ {{item.rating}} 分</view>
+      <view class="tags" wx:if="{{item.tags.length}}">
+        <text class="tag" wx:for="{{item.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text>
+      </view>
+      <view class="content">{{item.content}}</view>
+      <view class="time">服务完成 {{item.serviceCompletedAt}} · 评价于 {{item.createdAt}}</view>
+    </view>
+    <view class="empty" wx:if="{{!loading && filteredList.length === 0}}">暂无评价</view>
+  </scroll-view>
+</view>

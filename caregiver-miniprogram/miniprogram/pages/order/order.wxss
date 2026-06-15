@@ -1,0 +1,283 @@
+page {
+  background: #f3f4f6;
+}
+
+.order-container {
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+}
+
+/* 筛选栏 */
+.filter-bar {
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1rpx solid #e5e7eb;
+}
+
+.filter-section {
+  padding: 24rpx 32rpx;
+}
+
+.filter-section.border-top {
+  border-top: 1rpx solid #e5e7eb;
+}
+
+.filter-scroll {
+  white-space: nowrap;
+}
+
+.filter-item {
+  display: inline-block;
+  padding: 16rpx 32rpx;
+  margin-right: 16rpx;
+  background: #f3f4f6;
+  color: #6b7280;
+  font-size: 26rpx;
+  font-weight: 500;
+  border-radius: 999rpx;
+  transition: all 0.2s;
+}
+
+.filter-item.active {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+/* 订单列表 */
+.order-list {
+  padding: 32rpx;
+}
+
+/* 订单卡片 */
+.order-card {
+  background: #ffffff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 32rpx;
+  border: 1rpx solid #e5e7eb;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s;
+}
+
+.order-card:active {
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+}
+
+/* 订单头部 */
+.order-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 24rpx;
+  margin-bottom: 24rpx;
+  border-bottom: 1rpx solid #f3f4f6;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.type-tag {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #ffffff;
+  background: #3b82f6;
+  padding: 6rpx 16rpx;
+  border-radius: 8rpx;
+}
+
+.status-tag {
+  font-size: 24rpx;
+  font-weight: 500;
+  padding: 6rpx 16rpx;
+  border-radius: 8rpx;
+}
+
+.status-tag.status-3 {
+  background: #fff7ed;
+  color: #f97316;
+}
+
+.status-tag.status-4 {
+  background: #dbeafe;
+  color: #3b82f6;
+}
+
+.status-tag.status-5 {
+  background: #f3e8ff;
+  color: #a855f7;
+}
+
+.status-tag.status-6 {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.status-tag.status-7 {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.order-no {
+  font-size: 24rpx;
+  color: #9ca3af;
+}
+
+/* 服务包信息 */
+.package-info {
+  background: #eff6ff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.package-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16rpx;
+}
+
+.package-left {
+  flex: 1;
+}
+
+.package-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #1f2937;
+  margin-bottom: 8rpx;
+}
+
+.package-category {
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.package-right {
+  text-align: right;
+  margin-left: 32rpx;
+}
+
+.package-price {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #f97316;
+}
+
+.package-quantity {
+  font-size: 24rpx;
+  color: #6b7280;
+  margin-top: 4rpx;
+}
+
+.package-total {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1f2937;
+  text-align: right;
+}
+
+.total-amount {
+  font-size: 32rpx;
+  color: #f97316;
+  font-weight: 700;
+}
+
+/* 信息行 */
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  font-size: 28rpx;
+  margin-bottom: 24rpx;
+}
+
+.info-row:last-of-type {
+  margin-bottom: 0;
+}
+
+.info-row .icon {
+  font-size: 32rpx;
+  margin-right: 8rpx;
+}
+
+.info-row .location-img {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 8rpx;
+  flex-shrink: 0;
+}
+
+.info-label {
+  color: #6b7280;
+  min-width: 140rpx;
+}
+
+.info-value {
+  flex: 1;
+  color: #1f2937;
+}
+
+.info-value.time {
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.info-row.address {
+  align-items: flex-start;
+}
+
+.info-row.address .info-value {
+  color: #4b5563;
+}
+
+/* 操作按钮 */
+.order-actions {
+  margin-top: 24rpx;
+  padding-top: 24rpx;
+  border-top: 1rpx solid #f3f4f6;
+}
+
+.action-btn {
+  width: 100%;
+  height: 88rpx;
+  color: #ffffff;
+  font-size: 32rpx;
+  font-weight: 500;
+  border: none;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn.orange {
+  background: #f97316;
+}
+
+.action-btn.orange::after {
+  border: none;
+}
+
+.action-btn.blue {
+  background: #3b82f6;
+}
+
+.action-btn.blue::after {
+  border: none;
+}
+
+/* 空状态 */
+.empty {
+  text-align: center;
+  padding: 160rpx 0;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #9ca3af;
+}

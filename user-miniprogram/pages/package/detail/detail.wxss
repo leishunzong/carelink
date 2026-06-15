@@ -1,0 +1,145 @@
+/* 原型：内容区 overflow-y-auto pb-20，底部固定按钮不遮挡；留足底部留白 */
+.page {
+  min-height: 100vh;
+  padding-bottom: 220rpx;
+  background: #f9fafb;
+}
+
+.cover-wrap {
+  width: 100%;
+  height: 480rpx;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+}
+
+.block {
+  background: #fff;
+  margin-top: 24rpx;
+  padding: 32rpx;
+}
+
+.info-block {
+  padding: 32rpx;
+}
+
+.name {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 16rpx;
+}
+
+.desc {
+  display: block;
+  font-size: 28rpx;
+  color: #6b7280;
+  line-height: 1.5;
+  margin-bottom: 16rpx;
+}
+
+.sales {
+  display: block;
+  font-size: 26rpx;
+  color: #9ca3af;
+}
+
+.block-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 24rpx;
+}
+
+.method-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.method-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx;
+  border: 2rpx solid #e5e7eb;
+  border-radius: 16rpx;
+}
+
+.method-name {
+  font-size: 28rpx;
+  color: #374151;
+}
+
+.method-price {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #3B82F6;
+}
+
+.detail-content {
+  display: block;
+  font-size: 28rpx;
+  color: #6b7280;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.guarantee-row {
+  display: flex;
+  gap: 32rpx;
+  margin-top: 8rpx;
+}
+
+.guarantee-item {
+  flex: 1;
+  text-align: center;
+}
+
+.guarantee-icon {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 0 auto 16rpx;
+  background: #eff6ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56rpx;
+}
+
+.guarantee-text {
+  display: block;
+  font-size: 24rpx;
+  color: #6b7280;
+  margin-bottom: 24rpx;
+}
+
+.bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24rpx 32rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  background: #fff;
+  border-top: 1rpx solid #e5e7eb;
+}
+
+.book {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: #3B82F6 !important;
+  color: #fff !important;
+  border: none;
+  border-radius: 48rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+}

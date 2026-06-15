@@ -1,0 +1,161 @@
+<view class="home-container">
+  <!-- 顶部：城市 + 工作状态开关 -->
+  <view class="header">
+    <view class="header-left" bindtap="relocateCity">
+      <text class="city-name">{{ city }}</text>
+    </view>
+    
+    <view class="header-right">
+      <view wx:if="{{ workState === 2 }}" class="status-badge serving">
+        <view class="status-dot"></view>
+        <text>服务中</text>
+      </view>
+      <view wx:else class="status-switch">
+        <view 
+          class="switch-btn {{ workState === 1 ? 'active' : '' }}"
+          bindtap="switchToReceiving"
+        >
+          接单
+        </view>
+        <view 
+          class="switch-btn {{ workState === 3 ? 'active' : '' }}"
+          bindtap="switchToResting"
+        >
+          休息
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 当前位置 -->
+  <view class="location-bar">
+    <view class="location-info">
+      <image class="location-icon" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E5%AE%9A%E4%BD%8D-%E4%BD%8D%E7%BD%AE.png" mode="aspectFit"></image>
+      <text class="location-text">{{ location || '未获取位置' }}</text>
+    </view>
+    <view class="refresh-btn" bindtap="updateLocation">
+      <text class="refresh-icon">🔄</text>
+      <text class="refresh-text">更新位置</text>
+    </view>
+  </view>
+
+  <!-- 接单池 -->
+  <view class="content">
+    <view class="pool-title">接单池</view>
+    
+    <!-- 订单列表 -->
+    <scroll-view 
+      scroll-y 
+      class="order-list"
+      refresher-enabled
+      refresher-triggered="{{ refreshing }}"
+      bindrefresherrefresh="onPullDownRefresh"
+    >
+      <!-- 空状态 -->
+      <view wx:if="{{ orderList.length === 0 && !loading }}" class="empty-state">
+        <image class="empty-icon" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E8%AE%A2%E5%8D%95.png" mode="aspectFit"></image>
+        <text class="empty-text">暂无可接订单</text>
+        <text class="empty-tip">{{ workState === 3 ? '您当前处于休息状态，切换到接单状态即可接单' : '新订单将实时推送，请耐心等待' }}</text>
+      </view>
+
+      <!-- 订单卡片 -->
+      <view 
+        wx:for="{{ orderList }}" 
+        wx:key="id" 
+        class="order-card"
+      >
+        <!-- 订单头部 -->
+        <view class="order-header">
+          <view class="order-type-badge {{ item.orderType === 1 ? 'system' : 'direct' }}">
+            {{ item.orderType === 1 ? '系统匹配' : '定向预约' }}
+          </view>
+          <text class="order-no">{{ item.orderNo }}</text>
+        </view>
+
+        <!-- 服务包信息 -->
+        <view class="package-section">
+          <view class="package-info">
+            <text class="package-name">{{ item.packageName }}</text>
+          </view>
+          <view class="package-price">
+            <text class="price">¥{{ item.unitPrice }} ×{{ item.buyQuantity }}{{ item.billingMethodText }}</text>
+            <text class="total">总计: ¥{{ item.totalAmount }}</text>
+          </view>
+        </view>
+
+        <!-- 服务对象信息 -->
+        <view class="patient-section">
+          <view class="info-row">
+            <text class="label">服务对象:</text>
+            <text class="value">{{ item.clientName }} / {{ item.clientGender === 1 ? '男' : '女' }}{{ item.clientAge ? ' / ' + item.clientAge + '岁' : '' }}</text>
+          </view>
+          <view class="info-row">
+            <text class="label">自理能力:</text>
+            <text class="value">{{ item.selfCareAbility || '未填写' }}</text>
+          </view>
+          <view class="info-row">
+            <text class="label">病史:</text>
+            <text class="value">{{ item.medicalHistory || '无' }}</text>
+          </view>
+        </view>
+
+        <!-- 服务地址和时间 -->
+        <view class="address-section">
+          <view class="address-row">
+            <image class="icon location-img" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E5%AE%9A%E4%BD%8D-%E4%BD%8D%E7%BD%AE.png" mode="aspectFit"></image>
+            <text class="address-text">{{ item.detailAddress || item.address }}</text>
+          </view>
+          <view class="time-row">
+            <text class="time-text">{{ item.expectStartTimeText }}</text>
+          </view>
+        </view>
+
+        <!-- 联系人信息 -->
+        <view wx:if="{{ item.contactName }}" class="contact-section">
+          <text class="contact-name">{{ item.contactName }}</text>
+          <text class="contact-phone">{{ item.contactPhone }}</text>
+        </view>
+
+        <!-- 备注 -->
+        <view wx:if="{{ item.specialRemark }}" class="remark-section">
+          <text class="remark-text">{{ item.specialRemark }}</text>
+        </view>
+
+        <!-- 系统匹配订单显示要求 -->
+        <view wx:if="{{ item.orderType === 1 }}" class="requirement-section">
+          <view wx:if="{{ item.matchingRadius }}" class="req-item">
+            <text class="req-label">半径:</text>
+            <text class="req-value">{{ item.matchingRadius }}km</text>
+          </view>
+          <view wx:if="{{ item.reqGender }}" class="req-item">
+            <text class="req-label">性别:</text>
+            <text class="req-value">{{ item.reqGender === 1 ? '男' : '女' }}</text>
+          </view>
+          <view wx:if="{{ item.reqWorkYears }}" class="req-item">
+            <text class="req-label">工作年限:</text>
+            <text class="req-value">{{ item.reqWorkYears }}年以上</text>
+          </view>
+          <view wx:if="{{ item.reqNativePlace }}" class="req-item">
+            <text class="req-label">籍贯:</text>
+            <text class="req-value">{{ item.reqNativePlace }}</text>
+          </view>
+        </view>
+
+        <!-- 操作按钮 -->
+        <view 
+          class="action-btn {{ item.orderType === 1 ? 'system' : 'direct' }}"
+          bindtap="handleGrabOrder"
+          data-id="{{ item.id }}"
+          data-type="{{ item.orderType }}"
+        >
+          {{ item.orderType === 1 ? '立即抢单' : '立即接单' }}
+        </view>
+      </view>
+
+      <!-- 加载更多 -->
+      <view wx:if="{{ loading }}" class="loading">
+        <text>加载中...</text>
+      </view>
+    </scroll-view>
+  </view>
+</view>

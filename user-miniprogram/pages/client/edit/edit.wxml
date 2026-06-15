@@ -1,0 +1,62 @@
+<view class="page">
+  <view class="block">
+    <view class="row">
+      <text class="label">姓名</text>
+      <input class="input" placeholder="请输入姓名" value="{{name}}" bindinput="onNameInput" />
+    </view>
+    <view class="row" bindtap="showRelationPicker">
+      <text class="label">关系</text>
+      <text class="value">{{relationText}}</text>
+      <text class="arrow">›</text>
+    </view>
+    <view class="row row-picker">
+      <text class="label">出生日期</text>
+      <picker mode="date" value="{{birthday}}" start="1900-01-01" end="{{today}}" bindchange="onBirthdayChange" class="picker-trigger">
+        <view class="value-wrap">
+          <text class="value {{birthday ? '' : 'placeholder'}}">{{birthday || '请选择'}}</text>
+          <text class="arrow">›</text>
+        </view>
+      </picker>
+    </view>
+    <view class="row" bindtap="showGenderPicker">
+      <text class="label">性别</text>
+      <text class="value">{{gender === 1 ? '男' : gender === 2 ? '女' : '请选择'}}</text>
+      <text class="arrow">›</text>
+    </view>
+    <view class="row">
+      <text class="label">身高(cm)</text>
+      <input class="input" type="digit" placeholder="选填" value="{{height}}" bindinput="onHeightInput" />
+    </view>
+    <view class="row">
+      <text class="label">体重(kg)</text>
+      <input class="input" type="digit" placeholder="选填" value="{{weight}}" bindinput="onWeightInput" />
+    </view>
+    <view class="row" bindtap="showIntellectPicker">
+      <text class="label">智力情况</text>
+      <text class="value {{intellectStatus ? '' : 'placeholder'}}">{{intellectStatus || '请选择'}}</text>
+      <text class="arrow">›</text>
+    </view>
+    <view class="row" bindtap="showSelfCarePicker">
+      <text class="label">自理能力</text>
+      <text class="value {{selfCareAbility ? '' : 'placeholder'}}">{{selfCareAbility || '请选择'}}</text>
+      <text class="arrow">›</text>
+    </view>
+    <view class="row">
+      <text class="label">病史</text>
+      <input class="input" placeholder="选填" value="{{medicalHistory}}" bindinput="onMedicalInput" />
+    </view>
+    <view class="row">
+      <text class="label">备注</text>
+      <input class="input" placeholder="选填" value="{{remarks}}" bindinput="onRemarksInput" />
+    </view>
+    <view class="row switch-row">
+      <text class="label">设为默认</text>
+      <switch checked="{{isDefault}}" color="#3B82F6" bindchange="onDefaultChange" />
+    </view>
+  </view>
+  <button class="btn-primary save-btn" bindtap="onSave">保存</button>
+  <view class="picker-mask" wx:if="{{showPicker}}" catchtap="hidePicker"></view>
+  <view class="picker-popup" wx:if="{{showPicker}}">
+    <view class="picker-item" wx:for="{{pickerOptions}}" wx:key="*this" data-value="{{item}}" bindtap="onPickerSelect">{{item}}</view>
+  </view>
+</view>

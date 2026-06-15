@@ -1,0 +1,20 @@
+<!--pages/profile/about/about.wxml-->
+<view class="container">
+  <view class="logo-section">
+    <image class="app-logo" src="/images/logo.png" mode="aspectFit"></image>
+    <view class="app-name">护联护工端</view>
+    <view class="app-version">版本 {{version}}</view>
+  </view>
+
+  <van-cell-group>
+    <van-cell title="用户协议" is-link />
+    <van-cell title="隐私政策" is-link />
+    <van-cell title="功能介绍" is-link />
+    <van-cell title="联系我们" is-link />
+  </van-cell-group>
+
+  <view class="copyright">
+    <text>© 2024 护联科技</text>
+    <text>致力于提供优质家政服务</text>
+  </view>
+</view>

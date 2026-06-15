@@ -1,0 +1,123 @@
+<view class="order-container">
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <!-- 服务包类型筛选 -->
+    <view class="filter-section">
+      <scroll-view class="filter-scroll" scroll-x>
+        <view class="filter-item {{ selectedCategory === null ? 'active' : '' }}" bindtap="selectCategory" data-value="{{ null }}">
+          全部
+        </view>
+        <view class="filter-item {{ selectedCategory === 1 ? 'active' : '' }}" bindtap="selectCategory" data-value="1">
+          居家陪护
+        </view>
+        <view class="filter-item {{ selectedCategory === 2 ? 'active' : '' }}" bindtap="selectCategory" data-value="2">
+          医院陪护
+        </view>
+        <view class="filter-item {{ selectedCategory === 3 ? 'active' : '' }}" bindtap="selectCategory" data-value="3">
+          周期护理
+        </view>
+        <view class="filter-item {{ selectedCategory === 4 ? 'active' : '' }}" bindtap="selectCategory" data-value="4">
+          家政服务
+        </view>
+        <view class="filter-item {{ selectedCategory === 5 ? 'active' : '' }}" bindtap="selectCategory" data-value="5">
+          陪诊服务
+        </view>
+        <view class="filter-item {{ selectedCategory === 6 ? 'active' : '' }}" bindtap="selectCategory" data-value="6">
+          母婴护理
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 订单状态筛选 -->
+    <view class="filter-section border-top">
+      <scroll-view class="filter-scroll" scroll-x>
+        <view class="filter-item {{ selectedStatus === null ? 'active' : '' }}" bindtap="selectStatus" data-value="{{ null }}">
+          全部
+        </view>
+        <view class="filter-item {{ selectedStatus === 3 ? 'active' : '' }}" bindtap="selectStatus" data-value="3">
+          待上门
+        </view>
+        <view class="filter-item {{ selectedStatus === 4 ? 'active' : '' }}" bindtap="selectStatus" data-value="4">
+          服务中
+        </view>
+        <view class="filter-item {{ selectedStatus === 5 ? 'active' : '' }}" bindtap="selectStatus" data-value="5">
+          待确认
+        </view>
+        <view class="filter-item {{ selectedStatus === 6 ? 'active' : '' }}" bindtap="selectStatus" data-value="6">
+          已完成
+        </view>
+        <view class="filter-item {{ selectedStatus === 7 ? 'active' : '' }}" bindtap="selectStatus" data-value="7">
+          已取消
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 订单列表 -->
+  <view class="order-list">
+    <block wx:if="{{ orderList.length > 0 }}">
+      <view class="order-card" wx:for="{{ orderList }}" wx:key="id" bindtap="goToOrderDetail" data-id="{{ item.id }}">
+        <!-- 订单头部 -->
+        <view class="order-header">
+          <view class="header-left">
+            <text class="type-tag">{{ item.orderTypeText }}</text>
+            <text class="status-tag status-{{ item.status }}">{{ item.statusText }}</text>
+          </view>
+          <text class="order-no">{{ item.orderNo }}</text>
+        </view>
+
+        <!-- 服务包信息 -->
+        <view class="package-info">
+          <view class="package-header">
+            <view class="package-left">
+              <view class="package-name">{{ item.packageName }}</view>
+              <view class="package-category">{{ item.categoryText }}</view>
+            </view>
+            <view class="package-right">
+              <view class="package-price">¥{{ item.unitPrice }}</view>
+              <view class="package-quantity">×{{ item.buyQuantity }}{{ item.billingMethodText }}</view>
+            </view>
+          </view>
+          <view class="package-total">
+            总费用: <text class="total-amount">¥{{ item.totalAmount }}</text>
+          </view>
+        </view>
+
+        <!-- 联系人信息（如果有） -->
+        <view class="info-row" wx:if="{{ item.contactName }}">
+          <text class="info-label">联系人:</text>
+          <text class="info-value">{{ item.contactName }} {{ item.contactPhone }}</text>
+        </view>
+
+        <!-- 服务地址 -->
+        <view class="info-row address">
+          <image class="icon location-img" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E5%AE%9A%E4%BD%8D-%E4%BD%8D%E7%BD%AE.png" mode="aspectFit"></image>
+          <text class="info-value">{{ item.fullAddress }}</text>
+        </view>
+
+        <!-- 预约时间 -->
+        <view class="info-row">
+          <text class="info-label">预约时间:</text>
+          <text class="info-value time">{{ item.expectStartTime }}</text>
+        </view>
+
+        <!-- 操作按钮 -->
+        <view class="order-actions" wx:if="{{ item.buttonText }}">
+          <button 
+            class="action-btn {{ item.status === 3 ? 'orange' : 'blue' }}" 
+            catchtap="handleOrderAction"
+            data-id="{{ item.id }}"
+            data-status="{{ item.status }}"
+          >
+            {{ item.buttonText }}
+          </button>
+        </view>
+      </view>
+    </block>
+
+    <!-- 空状态 -->
+    <view class="empty" wx:else>
+      <text class="empty-text">暂无订单</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,78 @@
+/** 护联 用户端 全局样式 - 与 prototype 设计稿一致，主色 #3B82F6 **/
+page {
+  --primary: #3B82F6;
+  --primary-light: #60a5fa;
+  --primary-dark: #2563eb;
+  --text: #111827;
+  --text-secondary: #6b7280;
+  --text-placeholder: #9ca3af;
+  --border: #e5e7eb;
+  --bg: #f9fafb;
+  --white: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-size: 28rpx;
+  color: var(--text);
+  background-color: var(--bg);
+  box-sizing: border-box;
+}
+
+view, text, input, button, image, scroll-view {
+  box-sizing: border-box;
+}
+
+button {
+  padding: 0;
+  margin: 0;
+}
+button::after {
+  border: none;
+}
+
+/* 全局隐藏滚动条 */
+::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+
+.container {
+  min-height: 100vh;
+  padding: 32rpx;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: var(--white);
+  border: none;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  height: 96rpx;
+  line-height: 96rpx;
+}
+
+.btn-primary:active {
+  opacity: 0.9;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--primary);
+  border: 2rpx solid var(--primary);
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  height: 96rpx;
+  line-height: 96rpx;
+}
+
+.input-wrap {
+  background: var(--white);
+  border-radius: 16rpx;
+  padding: 24rpx 32rpx;
+  margin-bottom: 24rpx;
+  border: 2rpx solid var(--border);
+}
+
+.input-wrap.focus {
+  border-color: var(--primary);
+}

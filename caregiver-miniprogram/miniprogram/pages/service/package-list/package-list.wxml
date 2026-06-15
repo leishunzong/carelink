@@ -1,0 +1,103 @@
+<view class="package-list-container">
+  <!-- 分类筛选 -->
+  <scroll-view scroll-x class="category-scroll">
+    <view class="category-list">
+      <view
+        wx:for="{{ categories }}"
+        wx:key="id"
+        class="category-item {{ activeCategory === item.id ? 'active' : '' }}"
+        bindtap="onCategoryChange"
+        data-id="{{ item.id }}"
+      >
+        {{ item.name }}
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 服务包列表 -->
+  <scroll-view
+    scroll-y
+    class="package-scroll"
+    bindscrolltolower="onReachBottom"
+    lower-threshold="200"
+  >
+    <!-- 空状态 -->
+    <view wx:if="{{ packageList.length === 0 && !loading }}" class="empty-state">
+      <view class="empty-icon">📦</view>
+      <text class="empty-text">暂无服务包数据</text>
+    </view>
+
+    <!-- 服务包卡片列表 -->
+    <view
+      wx:for="{{ packageList }}"
+      wx:key="id"
+      class="package-card"
+    >
+      <!-- 封面图 -->
+      <image
+        wx:if="{{ item.coverImage }}"
+        class="package-cover"
+        src="{{ item.coverImage }}"
+        mode="aspectFill"
+      />
+      <view wx:else class="package-cover-placeholder">
+        <text class="placeholder-icon">📦</text>
+      </view>
+
+      <view class="package-content">
+        <view class="package-header">
+          <text class="package-name">{{ item.name }}</text>
+          <block wx:if="{{ item.opened }}">
+            <view class="status-tag opened">已开通</view>
+          </block>
+          <view wx:else class="category-badge">
+            {{ item.category === 1 ? '居家陪护' : item.category === 2 ? '医院陪护' : item.category === 3 ? '周期护理' : item.category === 4 ? '家政服务' : item.category === 5 ? '陪诊服务' : '母婴护理' }}
+          </view>
+        </view>
+
+        <!-- 价格信息 -->
+        <view class="price-row">
+          <text wx:if="{{ item.allowDay && item.priceDay }}" class="price-tag">¥{{ item.priceDay }}/天</text>
+          <text wx:if="{{ item.allowHour && item.priceHour }}" class="price-tag">¥{{ item.priceHour }}/时</text>
+          <text wx:if="{{ item.allowMonth && item.priceMonth }}" class="price-tag">¥{{ item.priceMonth }}/月</text>
+          <text wx:if="{{ item.allowTimes && item.priceTimes }}" class="price-tag">¥{{ item.priceTimes }}/次</text>
+        </view>
+
+        <view wx:if="{{ item.description }}" class="package-desc">
+          <text>{{ item.description }}</text>
+        </view>
+
+        <view class="package-footer">
+          <text class="sales-text">销量: {{ item.sales || 0 }}</text>
+          <view
+            wx:if="{{ item.opened }}"
+            class="cancel-btn"
+            bindtap="handleCancelPackage"
+            data-id="{{ item.id }}"
+            data-name="{{ item.name }}"
+          >
+            取消开通
+          </view>
+          <view
+            wx:else
+            class="open-btn"
+            bindtap="handleOpenPackage"
+            data-id="{{ item.id }}"
+            data-name="{{ item.name }}"
+          >
+            开通服务包
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载状态 -->
+    <view wx:if="{{ loading }}" class="loading-tip">
+      <van-loading size="24px">加载中...</van-loading>
+    </view>
+
+    <view wx:if="{{ !hasMore && packageList.length > 0 }}" class="no-more-tip">
+      <text>已加载全部</text>
+    </view>
+  </scroll-view>
+</view>

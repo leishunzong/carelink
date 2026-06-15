@@ -1,0 +1,96 @@
+.page {
+  min-height: 100vh;
+  background: #f9fafb;
+  padding: 32rpx 32rpx 180rpx;
+}
+
+.card {
+  position: relative;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 32rpx 32rpx 32rpx 100rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.04);
+}
+
+.delete-btn {
+  position: absolute;
+  top: 24rpx;
+  right: 24rpx;
+  font-size: 26rpx;
+  color: #ef4444;
+}
+
+.tag.default {
+  display: inline-block;
+  background: #3B82F6;
+  color: #fff;
+  font-size: 22rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  margin-bottom: 16rpx;
+}
+
+.region {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 12rpx;
+  display: flex;
+  align-items: center;
+}
+
+.detail {
+  font-size: 26rpx;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 0;
+}
+
+.empty-icon {
+  width: 80rpx;
+  height: 80rpx;
+  margin-bottom: 32rpx;
+  opacity: 0.5;
+}
+.loc-icon {
+  width: 28rpx;
+  height: 28rpx;
+  min-width: 28rpx;
+  min-height: 28rpx;
+  max-width: 28rpx;
+  max-height: 28rpx;
+  vertical-align: middle;
+  margin-right: 4rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #6b7280;
+  margin-bottom: 48rpx;
+}
+
+.add-btn {
+  width: 320rpx;
+}
+
+.bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24rpx 32rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  background: #fff;
+  box-shadow: 0 -4rpx 16rpx rgba(0,0,0,0.06);
+}
+
+.full {
+  width: 100%;
+}

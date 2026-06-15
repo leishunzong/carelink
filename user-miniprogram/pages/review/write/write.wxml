@@ -1,0 +1,38 @@
+<view class="page">
+  <view class="order-info">
+    <text class="order-no">订单编号：{{orderNo}}</text>
+    <text class="order-desc">{{packageName}} - {{caregiverName}}</text>
+  </view>
+  <view class="block">
+    <view class="block-title">评分</view>
+    <view class="stars">
+      <text class="star {{item <= rating ? 'on' : ''}}" wx:for="{{[1,2,3,4,5]}}" wx:key="*this" data-r="{{item}}" bindtap="onStar">★</text>
+    </view>
+    <view class="star-tip">{{rating >= 4 ? '非常满意' : rating >= 3 ? '满意' : '一般'}}</view>
+  </view>
+  <view class="block">
+    <view class="block-title">评价类型</view>
+    <view class="type-row">
+      <view class="type-btn {{reviewType === 'positive' ? 'active' : ''}}" bindtap="setType" data-type="positive"><image class="type-icon" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E5%A5%BD%E8%AF%84.png" mode="aspectFit"></image> 好评</view>
+      <view class="type-btn negative {{reviewType === 'negative' ? 'active' : ''}}" bindtap="setType" data-type="negative"><image class="type-icon" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E5%B7%AE%E8%AF%84.png" mode="aspectFit"></image> 差评</view>
+    </view>
+  </view>
+  <view class="block">
+    <view class="block-title">评价标签（可多选）</view>
+    <view class="tags">
+      <view class="tag {{selectedTagFlags[index] ? 'on' : ''}}" wx:for="{{tagList}}" wx:key="index" wx:for-item="item" wx:for-index="index" data-index="{{index}}" data-tag="{{item}}" bindtap="onTag">{{item}}</view>
+    </view>
+  </view>
+  <view class="block">
+    <view class="block-title">评价内容</view>
+    <textarea class="textarea" placeholder="请描述您对护工服务的评价（必填）" value="{{content}}" maxlength="500" bindinput="onContent" />
+    <view class="count">{{content.length}}/500</view>
+  </view>
+  <view class="block switch-row">
+    <text class="label">匿名评价</text>
+    <switch checked="{{isAnonymous}}" color="#3B82F6" bindchange="onAnonymous" />
+  </view>
+  <view class="block submit-block">
+    <button class="btn-primary full" bindtap="onSubmit">提交评价</button>
+  </view>
+</view>

@@ -1,0 +1,139 @@
+spring:
+  application:
+    name: care-link
+  
+  # MVC配置（修复Swagger兼容性问题）
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  
+  # 数据源配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL:jdbc:mysql://localhost:3306/care-link?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 1000
+        wall:
+          enabled: true
+      web-stat-filter:
+        enabled: true
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: false
+        login-username: ${DRUID_USERNAME:admin}
+        login-password: ${DRUID_PASSWORD:change-me}
+  
+  # Redis配置
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    database: ${REDIS_DATABASE:0}
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+    timeout: 10000ms
+  
+  # Jackson配置
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+      fail-on-empty-beans: false
+    deserialization:
+      fail-on-unknown-properties: false
+
+# MyBatis Plus配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    db-config:
+      id-type: auto
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.caregiver.carelink.entity
+
+# Knife4j配置
+knife4j:
+  enable: true
+  setting:
+    language: zh-CN
+
+# 服务器配置
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+  tomcat:
+    uri-encoding: UTF-8
+    threads:
+      max: 200
+      min-spare: 10
+
+# 腾讯云COS配置
+cos:
+  secret-id: ${COS_SECRET_ID:}
+  secret-key: ${COS_SECRET_KEY:}
+  region: ${COS_REGION:ap-beijing}
+  bucket-name: ${COS_BUCKET_NAME:}
+  base-url: ${COS_BASE_URL:}
+
+# AI助手配置（LangChain4j）
+ai:
+  model:
+    api-key: ${AI_API_KEY:}
+    base-url: ${AI_BASE_URL:https://api.moonshot.cn/v1}
+    model-name: ${AI_MODEL_NAME:moonshot-v1-8k}
+    temperature: 0.5
+    max-tokens: 4096
+    # 调用模型 API 的 HTTP 超时（秒），流式+工具调用时可能较久，默认 180
+    timeout-seconds: 300
+  chat:
+    memory-max-messages: 20
+    system-prompt-path: prompts/care-assistant.txt
+    memory-expire-seconds: 604800  # 对话记忆 Redis 过期时间，7天
+  rag:
+    enabled: true
+    knowledge-path: knowledge/
+    max-results: 3
+    min-score: 0.6
+
+# 文件上传配置
+spring.servlet.multipart:
+  max-file-size: 10MB
+  max-request-size: 10MB
+
+# 日志配置
+logging:
+  level:
+    root: info
+    com.caregiver.carelink: info
+  file:
+    name: logs/care-link.log

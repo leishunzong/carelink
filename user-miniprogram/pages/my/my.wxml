@@ -1,0 +1,71 @@
+<view class="page">
+  <!-- Header - 已登录 -->
+  <view class="header" wx:if="{{token}}">
+    <view class="header-bg">
+      <view class="circle circle-1"></view>
+      <view class="circle circle-2"></view>
+    </view>
+    <view class="user-row" bindtap="goProfile">
+      <view class="avatar-wrap">
+        <image class="avatar" src="{{userInfo.avatar || ''}}" mode="aspectFill" wx:if="{{userInfo.avatar}}" />
+        <text class="avatar-placeholder" wx:else>👤</text>
+      </view>
+      <view class="info">
+        <text class="nickname">{{userInfo.nickname || '用户'}}</text>
+        <text class="phone">{{userInfo.phone || ''}}</text>
+      </view>
+      <text class="header-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- Header - 未登录 -->
+  <view class="header" bindtap="goLogin" wx:else>
+    <view class="header-bg">
+      <view class="circle circle-1"></view>
+      <view class="circle circle-2"></view>
+    </view>
+    <view class="user-row">
+      <view class="avatar-wrap">
+        <text class="avatar-placeholder">👤</text>
+      </view>
+      <text class="login-tip">点击登录</text>
+      <text class="header-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- Menu Card -->
+  <view class="menu-section">
+    <view class="menu-card">
+      <view class="menu-item" bindtap="goOrders">
+        <image class="menu-icon-img" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E8%AE%A2%E5%8D%95.png" mode="aspectFit"></image>
+        <text class="menu-text">我的订单</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goAddress">
+        <image class="menu-icon-img" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E5%AE%9A%E4%BD%8D-%E4%BD%8D%E7%BD%AE.png" mode="aspectFit"></image>
+        <text class="menu-text">服务地址</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goSubject">
+        <image class="menu-icon-img" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E6%9C%8D%E5%8A%A1%E5%AF%B9%E8%B1%A1.png" mode="aspectFit"></image>
+        <text class="menu-text">服务对象</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goReviews">
+        <image class="menu-icon-img" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E8%AF%84%E4%BB%B7.png" mode="aspectFit"></image>
+        <text class="menu-text">我的评价</text>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goSettle">
+        <image class="menu-icon-img" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E5%85%A5%E9%A9%BB%20%281%29.png" mode="aspectFit"></image>
+        <text class="menu-text">接单入驻</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Logout -->
+  <view class="logout-section" wx:if="{{token}}">
+    <view class="logout-btn" bindtap="logout">退出登录</view>
+  </view>
+</view>

@@ -1,0 +1,40 @@
+<view class="page">
+  <view class="amount-block">
+    <text class="amount-label">订单金额</text>
+    <text class="amount">¥{{amount}}</text>
+    <text class="order-no">订单号：{{orderNo}}</text>
+  </view>
+  <view class="block">
+    <view class="block-title">选择支付方式</view>
+    <view class="method {{selectedMethod === item.id ? 'on' : ''}}" wx:for="{{methods}}" wx:key="id" data-id="{{item.id}}" bindtap="onMethod">
+      <view class="method-left">
+        <image class="method-icon" src="{{item.icon}}" mode="aspectFit"></image>
+        <view>
+          <text class="method-name">{{item.name}}</text>
+          <text class="method-desc">{{item.description}}</text>
+        </view>
+      </view>
+      <text class="check" wx:if="{{selectedMethod === item.id}}">✓</text>
+    </view>
+  </view>
+  <view class="notice">
+    <view class="notice-title">支付说明</view>
+    <text>· 支付成功后，订单将立即生效</text>
+    <text>· 请在15分钟内完成支付，否则订单将自动关闭</text>
+  </view>
+  <view class="bottom-bar">
+    <view class="total">
+      <text class="total-label">实付金额：</text>
+      <text class="total-amount">¥{{amount}}</text>
+    </view>
+    <button class="btn-primary pay-btn" bindtap="onPay" loading="{{paying}}">确认支付</button>
+  </view>
+  <view class="mask" wx:if="{{showSuccess}}" catchtap="hideSuccess"></view>
+  <view class="success-popup" wx:if="{{showSuccess}}">
+    <view class="success-icon">✓</view>
+    <view class="success-title">支付成功</view>
+    <view class="success-row"><text class="label">支付金额</text><text class="val">¥{{amount}}</text></view>
+    <view class="success-row"><text class="label">订单编号</text><text class="val">{{orderNo}}</text></view>
+    <button class="btn-primary" bindtap="goOrderDetail">完成</button>
+  </view>
+</view>

@@ -1,0 +1,36 @@
+<view class="page">
+  <!-- 搜索栏 -->
+  <view class="search-header">
+    <view class="search-bar">
+      <text class="search-icon">🔍</text>
+      <input class="search-input" placeholder="搜索服务包名称" value="{{keyword}}" bindinput="onKeywordInput" bindconfirm="onSearch" focus="{{focus}}" />
+    </view>
+    <text class="cancel" bindtap="onCancel">取消</text>
+  </view>
+
+  <!-- 热门搜索 -->
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">热门搜索</text>
+    </view>
+    <view class="tag-list">
+      <view class="tag hot" wx:for="{{hotKeywords}}" wx:key="*this" data-keyword="{{item}}" bindtap="onHotTap">{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 搜索历史 -->
+  <view class="section" wx:if="{{historyList.length > 0}}">
+    <view class="section-head">
+      <text class="section-title">搜索历史</text>
+      <text class="section-clear" bindtap="clearHistory">清空</text>
+    </view>
+    <view class="tag-list">
+      <view class="tag" wx:for="{{historyList}}" wx:key="*this" data-keyword="{{item}}" bindtap="onHistoryTap">{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 无内容提示（未搜索时） -->
+  <view class="empty" wx:if="{{!keyword && historyList.length === 0}}">
+    <text>输入关键词或点击热门搜索</text>
+  </view>
+</view>

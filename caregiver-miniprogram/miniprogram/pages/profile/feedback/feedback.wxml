@@ -1,0 +1,53 @@
+<!--pages/profile/feedback/feedback.wxml-->
+<view class="container">
+  <view class="feedback-form">
+    <van-field
+      value="{{feedbackType}}"
+      label="问题类型"
+      placeholder="请选择问题类型"
+      readonly
+      is-link
+      bind:tap="onShowTypePicker"
+    />
+    
+    <van-field
+      value="{{content}}"
+      label="问题描述"
+      type="textarea"
+      placeholder="请详细描述您遇到的问题或建议"
+      maxlength="500"
+      show-word-limit
+      autosize
+      bind:change="onContentChange"
+    />
+
+    <view class="upload-section">
+      <view class="upload-label">上传图片（选填）</view>
+      <van-uploader 
+        file-list="{{images}}" 
+        bind:after-read="onUploadImage"
+        bind:delete="onDeleteImage"
+        max-count="{{3}}"
+      />
+    </view>
+
+    <van-field
+      value="{{contact}}"
+      label="联系方式"
+      placeholder="请输入您的联系方式（选填）"
+      bind:change="onContactChange"
+    />
+  </view>
+
+  <view class="submit-section">
+    <van-button type="info" block round bind:tap="onSubmit">提交反馈</van-button>
+  </view>
+</view>
+
+<!-- 问题类型选择 -->
+<van-action-sheet 
+  show="{{showTypePicker}}" 
+  actions="{{typeActions}}"
+  bind:select="onSelectType"
+  bind:close="onCloseTypePicker"
+/>

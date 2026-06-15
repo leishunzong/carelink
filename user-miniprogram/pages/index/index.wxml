@@ -1,0 +1,88 @@
+<view class="page">
+  <!-- Header: 城市选择 + 搜索框 -->
+  <view class="header" style="padding-top:{{statusBarHeight + 8}}px">
+    <view class="city-wrap" bindtap="goCitySelector">
+      <text class="city-name">{{city}}</text>
+      <text class="city-arrow">›</text>
+    </view>
+    <view class="search-wrap" bindtap="goSearch">
+      <text class="search-text">搜索服务</text>
+      <image class="search-icon" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E6%90%9C%E7%B4%A2.png" mode="aspectFit" />
+    </view>
+  </view>
+
+  <!-- Banner 轮播图 -->
+  <swiper class="banner" indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff" autoplay circular>
+    <swiper-item wx:for="{{bannerImages}}" wx:key="index">
+      <image class="banner-img" src="{{item}}" mode="aspectFill" />
+    </swiper-item>
+  </swiper>
+
+  <!-- 服务分类 6宫格 -->
+  <view class="section">
+    <view class="categories">
+      <view class="category-item" wx:for="{{serviceCategories}}" wx:key="id" bindtap="goServiceList" data-id="{{item.id}}">
+        <view class="category-icon {{item.color}}">
+          <image class="category-icon-img" src="{{item.icon}}" mode="aspectFit" />
+        </view>
+        <text class="category-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 附近守护者 横向滚动 -->
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">附近守护者</text>
+    </view>
+    <scroll-view class="nearby-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+      <view class="nearby-inner">
+        <view class="nearby-card" wx:for="{{nearbyList}}" wx:key="id" bindtap="goCaregiverDetail" data-id="{{item.id}}">
+          <view class="nearby-avatar-wrap">
+            <image class="nearby-avatar" src="{{item.avatar || ''}}" mode="aspectFill" />
+            <view class="nearby-distance">{{item.distance}}</view>
+          </view>
+          <view class="nearby-info">
+            <text class="nearby-name">{{item.name}}</text>
+            <view class="nearby-row">
+              <text class="nearby-star">★ {{item.rating}}</text>
+              <view class="nearby-good">好评 {{item.goodRating}}</view>
+            </view>
+            <view class="nearby-meta">
+              <text>完单 {{item.completedOrders}}</text>
+              <text>{{item.workYears}}年经验</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 热卖服务包 分页加载 -->
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">热卖服务包</text>
+      <text class="section-more" bindtap="goServiceList" data-id="0">更多 ›</text>
+    </view>
+    <view class="hot-list">
+      <view class="hot-card" wx:for="{{displayedHotServices}}" wx:key="id" bindtap="goServiceDetail" data-id="{{item.id}}">
+        <image class="hot-cover" src="{{item.image || ''}}" mode="aspectFill" />
+        <view class="hot-info">
+          <text class="hot-name">{{item.name}}</text>
+          <text class="hot-desc">{{item.description}}</text>
+          <view class="hot-price-row">
+            <text class="hot-price">¥{{item.price}}</text>
+            <text class="hot-unit">/{{item.unit}}起</text>
+          </view>
+          <text class="hot-sales">已售 {{item.sales}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="load-more" wx:if="{{hotHasMore}}" bindtap="loadMoreHot">
+      <text>{{hotLoading ? '加载中...' : '加载更多'}}</text>
+    </view>
+    <view class="no-more" wx:if="{{!hotHasMore && displayedHotServices.length > 0}}">
+      <text>没有更多了</text>
+    </view>
+  </view>
+</view>

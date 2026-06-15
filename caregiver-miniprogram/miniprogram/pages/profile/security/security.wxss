@@ -1,0 +1,9 @@
+/* pages/profile/security/security.wxss */
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+van-cell-group {
+  margin-bottom: 16rpx;
+}

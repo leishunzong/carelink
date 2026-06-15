@@ -1,0 +1,122 @@
+<view class="page">
+  <view class="header-wrap">
+    <view class="basic-card">
+      <view class="top-row">
+        <image class="avatar" src="{{info.avatar || ''}}" mode="aspectFill" />
+        <view class="info-col">
+          <text class="name">{{info.realName || info.name || '护工'}}</text>
+          <view class="stars">
+            <text class="star" wx:for="{{[1,2,3,4,5]}}" wx:key="*this">{{item <= info.rating ? '★' : '☆'}}</text>
+            <text class="rating-num">{{info.rating || '-'}}</text>
+          </view>
+          <view class="meta-row">
+            <text>{{info.workYears || 0}}年经验</text>
+            <text>|</text>
+            <text>{{info.age || '-'}}岁</text>
+            <text>|</text>
+            <text>{{info.nativePlace || info.origin || '-'}}</text>
+          </view>
+          <view class="meta-row" wx:if="{{info.gender || info.education}}">
+            <text>{{info.gender || ''}}</text>
+            <text wx:if="{{info.gender && info.education}}">|</text>
+            <text>{{info.education || ''}}</text>
+          </view>
+        </view>
+      </view>
+      <!-- 评价标签 -->
+      <view class="tag-row" wx:if="{{tagStats.length}}">
+        <view class="tag {{item.type === 2 ? 'tag-neg' : 'tag-pos'}}" wx:for="{{tagStats}}" wx:key="tagId">{{item.tagName}}({{item.count}})</view>
+      </view>
+      <!-- 四项统计 -->
+      <view class="stats-row">
+        <view class="stat"><text class="stat-num">{{stats.goodReviewRatePercent || 0}}%</text><text class="stat-label">好评率</text></view>
+        <view class="stat"><text class="stat-num">{{stats.orderCount || 0}}</text><text class="stat-label">完单量</text></view>
+        <view class="stat"><text class="stat-num">{{stats.reviewCount || 0}}</text><text class="stat-label">评论数</text></view>
+        <view class="stat"><text class="stat-num">{{stats.cancelCount || 0}}</text><text class="stat-label">爽约数</text></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Tab -->
+  <view class="tabs">
+    <view class="tab {{tab === 'basic' ? 'active' : ''}}" data-tab="basic" bindtap="onTab">基础信息</view>
+    <view class="tab {{tab === 'skills' ? 'active' : ''}}" data-tab="skills" bindtap="onTab">技能信息</view>
+    <view class="tab {{tab === 'reviews' ? 'active' : ''}}" data-tab="reviews" bindtap="onTab">评价信息</view>
+    <view class="tab {{tab === 'services' ? 'active' : ''}}" data-tab="services" bindtap="onTab">服务包</view>
+  </view>
+
+  <view class="tab-content">
+    <!-- 基础信息 -->
+    <view class="content-panel" wx:if="{{tab === 'basic'}}">
+      <view class="info-line"><text class="info-label">姓名</text><text class="info-value">{{info.realName || info.name}}</text></view>
+      <view class="info-line"><text class="info-label">性别</text><text class="info-value">{{info.gender || '-'}}</text></view>
+      <view class="info-line"><text class="info-label">年龄</text><text class="info-value">{{info.age || '-'}}岁</text></view>
+      <view class="info-line"><text class="info-label">籍贯</text><text class="info-value">{{info.nativePlace || info.origin || '-'}}</text></view>
+      <view class="info-line"><text class="info-label">从业年限</text><text class="info-value">{{info.workYears || 0}}年</text></view>
+      <view class="info-line"><text class="info-label">学历</text><text class="info-value">{{info.education || '-'}}</text></view>
+    </view>
+
+    <!-- 技能信息 -->
+    <view class="content-panel" wx:if="{{tab === 'skills'}}">
+      <view class="skill-group" wx:for="{{skillGroups}}" wx:key="title">
+        <text class="skill-title">{{item.title}}：</text>
+        <view class="skill-tags">
+          <text class="skill-tag" wx:for="{{item.items}}" wx:for-item="s" wx:key="*this">{{s}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 评价信息 -->
+    <view class="content-panel" wx:if="{{tab === 'reviews'}}">
+      <!-- AI 智能评价摘要 -->
+      <view class="ai-summary-section">
+        <view class="ai-summary-header">
+          <text class="ai-summary-icon">✨</text>
+          <text class="ai-summary-title">AI 智能评价摘要</text>
+        </view>
+        <view class="ai-summary-body" wx:if="{{aiSummaryLoading}}">
+          <view class="ai-summary-loading">
+            <text class="ai-loading-dot">●</text>
+            <text class="ai-loading-text">AI 正在分析评价中...</text>
+          </view>
+        </view>
+        <view class="ai-summary-body" wx:elif="{{aiSummary}}">
+          <text class="ai-summary-text">{{aiSummary}}</text>
+        </view>
+        <view class="ai-summary-body" wx:else>
+          <text class="ai-summary-empty">暂无 AI 评价摘要</text>
+        </view>
+      </view>
+
+      <text class="panel-title">用户评价</text>
+      <view class="review-item" wx:for="{{reviews}}" wx:key="id">
+        <view class="review-head">
+          <text class="review-user">{{item.nickname || item.username || '用户'}}</text>
+          <text class="review-star">{{item.stars || item.rating}}星</text>
+        </view>
+        <text class="review-content">{{item.content}}</text>
+        <text class="review-date">{{item.createTime || item.date}}</text>
+      </view>
+      <view class="empty-tip" wx:if="{{reviews.length === 0}}">暂无评价</view>
+    </view>
+
+    <!-- 服务包 -->
+    <view class="content-panel" wx:if="{{tab === 'services'}}">
+      <text class="panel-title">支持的服务包</text>
+      <view class="service-card" wx:for="{{packages}}" wx:key="id" bindtap="goDirectOrder" data-package-id="{{item.id}}">
+        <view class="service-icon">📦</view>
+        <view class="service-info">
+          <text class="service-name">{{item.name}}</text>
+          <text class="service-desc">{{item.description || '专业护理服务'}}</text>
+        </view>
+        <view class="service-btn">预约</view>
+      </view>
+      <view class="empty-tip" wx:if="{{packages.length === 0}}">暂无服务包</view>
+    </view>
+  </view>
+
+  <!-- 底部固定按钮 -->
+  <view class="bottom-bar">
+    <button class="btn-primary full" bindtap="goDirectOrderMain">预约该护工</button>
+  </view>
+</view>

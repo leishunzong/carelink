@@ -1,0 +1,72 @@
+<view class="page">
+  <!-- 城市信息 -->
+  <view class="city-info" wx:if="{{currentCity}}">
+    <text class="city-text">当前城市：{{currentCity}}</text>
+  </view>
+  
+  <!-- Search -->
+  <view class="search-row">
+    <view class="search-bar">
+      <input class="search-input" placeholder="请输入护工名" value="{{searchQuery}}" bindinput="onSearchInput" bindconfirm="onSearch" />
+    </view>
+    <view class="btn-search" bindtap="onSearch">搜索</view>
+  </view>
+
+  <!-- Service Categories 横向滚动 -->
+  <scroll-view class="tabs-wrap" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="tabs-inner">
+      <view class="tab {{selectedCategory === item.id ? 'active' : ''}}" wx:for="{{categoryList}}" wx:key="id" data-id="{{item.id}}" bindtap="onCategory">{{item.name}}</view>
+    </view>
+  </scroll-view>
+
+  <!-- Sort & Filter 横向滚动 -->
+  <scroll-view class="filter-wrap" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="filter-inner">
+      <view class="filter-btn {{sortBy !== 'register_time' ? 'active' : ''}}" bindtap="showSortPicker">排序 ▼</view>
+      <view class="filter-btn {{filters.age ? 'active' : ''}}" bindtap="showAgePicker">年龄 ▼</view>
+      <view class="filter-btn {{filters.gender ? 'active' : ''}}" bindtap="showGenderPicker">性别 ▼</view>
+      <view class="filter-btn {{filters.experience ? 'active' : ''}}" bindtap="showExpPicker">经验 ▼</view>
+      <view class="filter-btn {{filters.education ? 'active' : ''}}" bindtap="showEduPicker">学历 ▼</view>
+    </view>
+  </scroll-view>
+
+  <!-- Caregiver List -->
+  <scroll-view class="list" scroll-y enhanced show-scrollbar="{{false}}" bindscrolltolower="onReachBottom">
+    <view class="card" wx:for="{{list}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <image class="avatar" src="{{item.avatar || ''}}" mode="aspectFill" />
+      <view class="body">
+        <view class="head">
+          <text class="name">{{item.name}}</text>
+          <text class="status status-{{item.statusCode}}">{{item.status}}</text>
+        </view>
+        <view class="meta-row">
+          <text class="star">★ {{item.rating}}</text>
+          <text class="exp">{{item.experience}}</text>
+          <text class="info">{{item.age}}岁</text>
+          <text class="info">{{item.origin}}</text>
+        </view>
+        <view class="services">
+          <text class="tag" wx:for="{{item.services}}" wx:for-item="s" wx:key="*this">{{s}}</text>
+        </view>
+        <view class="foot">
+          <text class="price">¥{{item.price}}/天起</text>
+          <text class="orders">完单 {{item.completedOrders}}</text>
+        </view>
+      </view>
+      <text class="arrow">›</text>
+    </view>
+    <view class="empty" wx:if="{{!loading && list.length === 0}}">暂无护工</view>
+    <view class="loading-tip" wx:if="{{loading}}">加载中...</view>
+    <view class="loading-tip" wx:if="{{noMore && list.length > 0}}">没有更多了</view>
+  </scroll-view>
+
+  <!-- Picker popup -->
+  <view class="picker-mask" wx:if="{{showPicker}}" catchtap="hidePicker"></view>
+  <view class="picker-popup" wx:if="{{showPicker}}">
+    <view class="picker-title">{{pickerTitle}}</view>
+    <view class="picker-item {{pickerSelected === item.value ? 'selected' : ''}}" wx:for="{{pickerOptions}}" wx:key="value" data-value="{{item.value}}" data-label="{{item.label}}" bindtap="onPickerSelect">
+      <text>{{item.label}}</text>
+      <text class="check" wx:if="{{pickerSelected === item.value}}">✓</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,80 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/index/index",
+    "pages/register/register",
+    "pages/caregiver/index/index",
+    "pages/chat/chat",
+    "pages/package/list/list",
+    "pages/package/detail/detail",
+    "pages/caregiver/search/search",
+    "pages/caregiver/detail/detail",
+    "pages/order/list/list",
+    "pages/order/detail/detail",
+    "pages/order/create/create",
+    "pages/order/direct/direct",
+    "pages/my/my",
+    "pages/address/list/list",
+    "pages/address/edit/edit",
+    "pages/client/list/list",
+    "pages/client/edit/edit",
+    "pages/profile/edit/edit",
+    "pages/city/index/index",
+    "pages/review/list/list",
+    "pages/review/detail/detail",
+    "pages/review/write/write",
+    "pages/payment/payment",
+    "pages/nearby/nearby",
+    "pages/search/search"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于展示当前城市、附近护工与地址选择"
+    }
+  },
+  "requiredPrivateInfos": [
+    "getLocation",
+    "startLocationUpdate",
+    "onLocationChange"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#3B82F6",
+    "navigationBarTitleText": "护联",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#3B82F6",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "服务",
+        "iconPath": "assets/tab-home.png",
+        "selectedIconPath": "assets/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/caregiver/index/index",
+        "text": "护工",
+        "iconPath": "assets/tab-caregiver.png",
+        "selectedIconPath": "assets/tab-caregiver-active.png"
+      },
+      {
+        "pagePath": "pages/chat/chat",
+        "text": "对话",
+        "iconPath": "assets/tab-chat.png",
+        "selectedIconPath": "assets/tab-chat-active.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的",
+        "iconPath": "assets/tab-my.png",
+        "selectedIconPath": "assets/tab-my-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,108 @@
+<!--pages/profile/earnings/earnings.wxml-->
+<view class="container">
+  <!-- 收益概览 -->
+  <view class="earnings-summary">
+    <view class="summary-item">
+      <view class="summary-value">¥{{summary.totalEarnings}}</view>
+      <view class="summary-label">累计收益</view>
+    </view>
+    <view class="summary-divider"></view>
+    <view class="summary-item">
+      <view class="summary-value">¥{{summary.monthEarnings}}</view>
+      <view class="summary-label">本月收益</view>
+    </view>
+    <view class="summary-divider"></view>
+    <view class="summary-item">
+      <view class="summary-value">¥{{summary.withdrawableAmount}}</view>
+      <view class="summary-label">可提现</view>
+    </view>
+  </view>
+
+  <!-- 提现按钮 -->
+  <view class="withdraw-section">
+    <van-button 
+      type="info" 
+      size="large" 
+      round
+      bind:tap="onWithdraw"
+      disabled="{{summary.withdrawableAmount <= 0}}"
+    >申请提现</van-button>
+  </view>
+
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <van-tabs 
+      active="{{activeTab}}" 
+      bind:change="onTabChange"
+      color="#1989fa"
+    >
+      <van-tab title="全部" name="all"></van-tab>
+      <van-tab title="收入" name="income"></van-tab>
+      <van-tab title="提现" name="withdraw"></van-tab>
+    </van-tabs>
+  </view>
+
+  <!-- 收益列表 -->
+  <view class="earnings-list">
+    <block wx:for="{{earningsList}}" wx:key="id">
+      <view class="earnings-item">
+        <view class="item-left">
+          <view class="item-icon {{item.type === 'income' ? 'income' : 'withdraw'}}">
+            <van-icon name="{{item.type === 'income' ? 'paid' : 'balance-o'}}" />
+          </view>
+          <view class="item-info">
+            <view class="item-title">{{item.title}}</view>
+            <view class="item-time">{{item.createTime}}</view>
+          </view>
+        </view>
+        <view class="item-right">
+          <view class="item-amount {{item.type === 'income' ? 'income' : 'withdraw'}}">
+            {{item.type === 'income' ? '+' : '-'}}¥{{item.amount}}
+          </view>
+          <view class="item-status">{{statusMap[item.status]}}</view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 空状态 -->
+  <van-empty 
+    wx:if="{{!loading && earningsList.length === 0}}"
+    description="暂无收益记录"
+  />
+
+  <!-- 加载更多 -->
+  <view wx:if="{{earningsList.length > 0 && hasMore}}" class="load-more">
+    <van-loading size="20px">加载中...</van-loading>
+  </view>
+</view>
+
+<!-- 提现弹窗 -->
+<van-dialog
+  id="van-dialog"
+  use-slot
+  title="申请提现"
+  show="{{showWithdrawDialog}}"
+  show-cancel-button
+  confirm-button-text="确认提现"
+  bind:confirm="onConfirmWithdraw"
+  bind:cancel="onCancelWithdraw"
+>
+  <view class="dialog-content">
+    <view class="withdraw-balance">
+      <text class="balance-label">可提现金额</text>
+      <text class="balance-value">¥{{summary.withdrawableAmount}}</text>
+    </view>
+    <van-field
+      value="{{withdrawAmount}}"
+      label="提现金额"
+      type="digit"
+      placeholder="请输入提现金额"
+      bind:change="onWithdrawAmountChange"
+    />
+    <view class="withdraw-tips">
+      <van-icon name="info-o" />
+      <text>提现将在1-3个工作日内到账</text>
+    </view>
+  </view>
+</van-dialog>

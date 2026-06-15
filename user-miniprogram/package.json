@@ -1,0 +1,18 @@
+{
+  "name": "carelink-user",
+  "version": "1.0.0",
+  "description": "基于 Figma 设计稿与后端 API 文档搭建的用户端小程序，先完成界面结构、样式与交互，接口为 mock，后续在 `utils/request.js` 与各页 `load*` 方法中对接 `backend/care-link`。",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "marked": "^12.0.0",
+    "mp-html": "^2.5.2",
+    "towxml": "^3.0.6"
+  }
+}

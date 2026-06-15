@@ -1,0 +1,31 @@
+<!--pages/profile/security/security.wxml-->
+<view class="container">
+  <van-cell-group>
+    <van-cell 
+      title="修改密码" 
+      is-link 
+      url="/pages/profile/change-password/change-password"
+    />
+    <van-cell 
+      title="绑定手机" 
+      is-link 
+      value="{{phoneNumber}}"
+    />
+    <van-cell 
+      title="实名认证" 
+      is-link
+    >
+      <van-tag wx:if="{{isVerified}}" type="success">已认证</van-tag>
+      <van-tag wx:else type="warning">未认证</van-tag>
+    </van-cell>
+  </van-cell-group>
+
+  <van-cell-group title="隐私设置">
+    <van-cell title="允许搜索到我">
+      <van-switch checked="{{settings.searchable}}" bind:change="onSettingChange" data-key="searchable" />
+    </van-cell>
+    <van-cell title="展示工作轨迹">
+      <van-switch checked="{{settings.showTrack}}" bind:change="onSettingChange" data-key="showTrack" />
+    </van-cell>
+  </van-cell-group>
+</view>

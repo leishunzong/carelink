@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "智能助手",
+  "usingComponents": {
+    "mp-html": "mp-html"
+  }
+}

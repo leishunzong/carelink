@@ -1,0 +1,107 @@
+<view class="page">
+  <!-- Header: 标题 + 右上角对话记录按钮 -->
+  <view class="header">
+    <text class="title">智能助手</text>
+    <view class="header-btn" bindtap="onOpenHistory">
+      <text class="header-btn-icon">☰</text>
+    </view>
+  </view>
+
+  <!-- Messages -->
+  <scroll-view class="messages" scroll-y scroll-into-view="{{scrollToId}}" enhanced show-scrollbar="{{false}}">
+    <view class="msg-list">
+      <view class="msg {{item.role}}" wx:for="{{messages}}" wx:key="_msgKey" id="msg-{{index}}">
+        <view class="bubble">
+          <block wx:if="{{item.role === 'assistant'}}">
+            <!-- 流式阶段：纯文本 -->
+            <text wx:if="{{index === streamingIndex}}" selectable space="nbsp" decode="{{true}}" user-select class="bubble-text">{{item.content}}</text>
+            <!-- 完成阶段：格式化文本 -->
+            <text wx:else selectable space="nbsp" decode="{{true}}" user-select class="bubble-formatted-text">{{item.formattedContent || item.content}}</text>
+          </block>
+          <text wx:else selectable space="nbsp" decode="{{true}}">{{item.content}}</text>
+        </view>
+      </view>
+      <view class="msg assistant" wx:if="{{isTyping && showTypingDots}}">
+        <view class="bubble typing">
+          <view class="dot"></view>
+          <view class="dot"></view>
+          <view class="dot"></view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- Bottom area: quick actions + input -->
+  <view class="bottom-area">
+    <scroll-view class="quick-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+      <view class="quick-inner">
+        <view class="quick-btn purple" bindtap="onQuickAction" data-action="recommend"><image class="quick-icon" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E8%AF%A2%E9%97%AE.png" mode="aspectFit"></image> 智能推荐</view>
+        <view class="quick-btn blue" bindtap="onQuickAction" data-action="search"><image class="quick-icon" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E6%90%9C%E7%B4%A2.png" mode="aspectFit"></image> 搜索护工</view>
+        <view class="quick-btn green" bindtap="onQuickAction" data-action="service"><image class="quick-icon" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E8%AF%A2%E9%97%AE.png" mode="aspectFit"></image> 询问服务</view>
+        <view class="quick-btn orange" bindtap="onQuickAction" data-action="booking"><image class="quick-icon" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E9%A2%84%E7%BA%A6h.png" mode="aspectFit"></image> 预约服务</view>
+      </view>
+    </scroll-view>
+    <view class="input-row">
+      <input class="input" placeholder="{{inputPlaceholder}}" value="{{message}}" bindinput="onInput" bindconfirm="onSend" />
+      <view class="send-btn" bindtap="onSend">↑</view>
+    </view>
+  </view>
+
+  <!-- 对话记录侧边栏 -->
+  <view class="history-mask" wx:if="{{showHistory}}" catchtap="onCloseHistory"></view>
+  <view class="history-sheet" wx:if="{{showHistory}}">
+    <view class="history-head">
+      <text class="history-title">对话记录</text>
+      <view class="history-head-actions">
+        <text class="history-clear" wx:if="{{conversationList.length > 0}}" bindtap="onConfirmClear">清空</text>
+      </view>
+    </view>
+    <view class="history-new-btn" bindtap="onNewConversation">
+      <text class="history-new-icon">＋</text>
+      <text class="history-new-text">新增对话</text>
+    </view>
+    <text class="history-desc">查看和管理您的对话记录</text>
+    <scroll-view class="history-list" scroll-y enhanced>
+      <block wx:if="{{conversationList.length === 0}}">
+        <view class="history-empty">
+          <text class="history-empty-icon">💬</text>
+          <text class="history-empty-text">暂无对话记录</text>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="history-item {{item.conversationId === conversationId ? 'active' : ''}}" wx:for="{{conversationList}}" wx:key="conversationId" bindtap="onSelectConversation" data-cid="{{item.conversationId}}">
+          <view class="item-main">
+            <view class="item-row">
+              <text class="item-pin" wx:if="{{item.isPinned}}">📌</text>
+              <text class="item-star" wx:if="{{item.isFavorite}}">⭐</text>
+              <text class="item-title">{{item.title || '新对话'}}</text>
+            </view>
+            <text class="item-time">{{item.updateTimeText}}</text>
+          </view>
+          <view class="item-actions">
+            <view class="item-action-btn" catchtap="onTogglePin" data-cid="{{item.conversationId}}" data-pinned="{{item.isPinned}}" title="{{item.isPinned ? '取消置顶' : '置顶'}}">
+              <text class="item-action-icon {{item.isPinned ? 'active' : ''}}">📌</text>
+            </view>
+            <view class="item-action-btn" catchtap="onToggleFavorite" data-cid="{{item.conversationId}}" data-favorite="{{item.isFavorite}}" title="{{item.isFavorite ? '取消收藏' : '收藏'}}">
+              <text class="item-action-icon">{{item.isFavorite ? '★' : '☆'}}</text>
+            </view>
+            <view class="item-action-btn danger" catchtap="onDeleteConversation" data-cid="{{item.conversationId}}" title="删除">
+              <text class="item-action-icon">🗑</text>
+            </view>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+
+  <!-- 清空全部确认弹窗 -->
+  <view class="modal-mask" wx:if="{{showClearModal}}" catchtap="onCloseClearModal"></view>
+  <view class="modal-box" wx:if="{{showClearModal}}">
+    <text class="modal-title">确认清空所有对话记录？</text>
+    <text class="modal-desc">此操作将删除所有对话记录，包括已置顶和收藏的对话。此操作不可恢复。</text>
+    <view class="modal-actions">
+      <button class="modal-btn ghost" bindtap="onCloseClearModal">取消</button>
+      <button class="modal-btn danger" bindtap="onClearAll">确认清空</button>
+    </view>
+  </view>
+</view>

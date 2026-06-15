@@ -1,0 +1,127 @@
+.container {
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    padding-bottom: 120rpx;
+}
+
+/* 分类筛选 */
+.category-scroll {
+    white-space: nowrap;
+    background: white;
+    padding: 16rpx 0;
+}
+
+.category-list {
+    display: inline-flex;
+    padding: 0 24rpx;
+    gap: 16rpx;
+}
+
+.category-item {
+    display: inline-block;
+    padding: 12rpx 28rpx;
+    border-radius: 32rpx;
+    font-size: 26rpx;
+    color: #666;
+    background: #f5f5f5;
+    white-space: nowrap;
+}
+
+.category-item.active {
+    color: white;
+    background: #1989fa;
+}
+
+/* 技能列表 */
+.skill-list {
+    padding: 24rpx 32rpx;
+}
+
+.skill-item {
+    background: white;
+    border-radius: 16rpx;
+    padding: 32rpx;
+    margin-bottom: 24rpx;
+    box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.skill-info {
+    margin-bottom: 24rpx;
+}
+
+.skill-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12rpx;
+}
+
+.skill-name {
+    font-size: 32rpx;
+    font-weight: bold;
+    color: #333;
+}
+
+.skill-meta {
+    display: flex;
+    align-items: center;
+    gap: 16rpx;
+    margin-bottom: 8rpx;
+}
+
+.skill-type {
+    font-size: 26rpx;
+    color: #1989fa;
+}
+
+.skill-level {
+    font-size: 24rpx;
+    color: #fff;
+    background: #07c160;
+    padding: 2rpx 16rpx;
+    border-radius: 16rpx;
+}
+
+.skill-desc {
+    font-size: 28rpx;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 8rpx;
+}
+
+.skill-time {
+    font-size: 24rpx;
+    color: #999;
+    margin-bottom: 8rpx;
+}
+
+.skill-reject-tip {
+    display: flex;
+    align-items: center;
+    font-size: 24rpx;
+    color: #ee0a24;
+    gap: 6rpx;
+}
+
+.skill-actions {
+    display: flex;
+    gap: 16rpx;
+    justify-content: flex-end;
+}
+
+/* 空状态 */
+van-empty {
+    margin-top: 200rpx;
+}
+
+/* 加载状态 */
+.load-more {
+    display: flex;
+    justify-content: center;
+    padding: 40rpx 0;
+}
+
+/* 底部操作 */
+.bottom-action {
+    padding: 24rpx 32rpx;
+}

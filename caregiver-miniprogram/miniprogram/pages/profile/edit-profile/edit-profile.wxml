@@ -1,0 +1,102 @@
+<view class="container" wx:if="{{ !loading }}">
+  <!-- 头像区域 -->
+  <view class="avatar-section" bindtap="onChooseAvatar">
+    <view class="avatar-wrapper">
+      <image wx:if="{{ formData.avatar }}" class="avatar" src="{{ formData.avatar }}" mode="aspectFill"></image>
+      <view wx:else class="avatar avatar-placeholder">
+        <text class="avatar-text">{{ formData.realName ? formData.realName.substring(0, 1) : '?' }}</text>
+      </view>
+      <view class="camera-icon">
+        <van-icon name="photograph" size="14px" color="#fff" />
+      </view>
+    </view>
+    <text class="avatar-tip">点击更换头像</text>
+  </view>
+
+  <!-- 审核状态 -->
+  <view class="verify-bar verify-{{ verifyStatus }}">
+    <van-icon name="{{ verifyStatus === 1 ? 'passed' : verifyStatus === 0 ? 'clock-o' : 'warning-o' }}" size="16px" />
+    <text>{{ verifyStatus === 1 ? '已认证' : verifyStatus === 0 ? '待审核' : '审核未通过' }}</text>
+  </view>
+
+  <!-- 表单 -->
+  <view class="form-section">
+    <view class="section-title">基本信息</view>
+    <van-cell-group border="{{ false }}">
+      <van-field
+        value="{{ formData.realName }}"
+        label="姓名"
+        placeholder="请输入真实姓名"
+        required
+        bind:change="onFieldChange"
+        data-field="realName"
+      />
+      <van-field
+        value="{{ formData.phone }}"
+        label="手机号"
+        placeholder="手机号"
+        disabled
+        required
+      />
+
+      <!-- 性别 -->
+      <picker mode="selector" range="{{ genderOptions }}" value="{{ genderIndex }}" bindchange="onGenderChange">
+        <van-cell title="性别" is-link required value="{{ genderIndex >= 0 ? genderOptions[genderIndex] : '请选择' }}" />
+      </picker>
+
+      <!-- 生日 -->
+      <picker mode="date" value="{{ formData.birthday }}" start="1940-01-01" end="2010-12-31" bindchange="onBirthdayChange">
+        <van-cell title="出生日期" is-link value="{{ formData.birthday || '请选择' }}" />
+      </picker>
+    </van-cell-group>
+  </view>
+
+  <view class="form-section">
+    <view class="section-title">详细信息</view>
+    <van-cell-group border="{{ false }}">
+      <!-- 籍贯 -->
+      <picker mode="selector" range="{{ provinceOptions }}" value="{{ provinceIndex }}" bindchange="onProvinceChange">
+        <van-cell title="籍贯" is-link value="{{ formData.nativePlace || '请选择' }}" />
+      </picker>
+
+      <!-- 学历 -->
+      <picker mode="selector" range="{{ educationOptions }}" value="{{ educationIndex }}" bindchange="onEducationChange">
+        <van-cell title="学历" is-link value="{{ formData.education || '请选择' }}" />
+      </picker>
+
+      <!-- 民族 -->
+      <picker mode="selector" range="{{ ethnicityOptions }}" value="{{ ethnicityIndex }}" bindchange="onEthnicityChange">
+        <van-cell title="民族" is-link value="{{ formData.ethnicity || '请选择' }}" />
+      </picker>
+
+      <!-- 从业年限 -->
+      <van-field
+        value="{{ formData.workYears }}"
+        label="从业年限"
+        type="number"
+        placeholder="请输入从业年限"
+        bind:change="onFieldChange"
+        data-field="workYears"
+      />
+
+      <!-- 常住地址 -->
+      <van-field
+        value="{{ formData.residentAddress }}"
+        label="常住地址"
+        placeholder="请输入常住地址"
+        bind:change="onFieldChange"
+        data-field="residentAddress"
+      />
+    </van-cell-group>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="submit-section">
+    <van-button type="info" block round bind:tap="onSubmit">保存</van-button>
+  </view>
+</view>
+
+<!-- 加载中 -->
+<view wx:if="{{ loading }}" class="loading-container">
+  <van-loading size="24px" vertical>加载中...</van-loading>
+</view>

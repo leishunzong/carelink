@@ -1,0 +1,264 @@
+<view class="settlement-container">
+  <!-- 步骤指示器 -->
+  <view class="steps-wrapper">
+    <van-steps steps="{{ steps }}" active="{{ currentStep }}" active-color="#1989fa" />
+  </view>
+
+  <!-- 表单内容区 -->
+  <view class="form-content">
+    <!-- 步骤 1: 基本信息 -->
+    <view class="step-panel" wx:if="{{ currentStep === 0 }}">
+      <view class="panel-title">基本信息</view>
+      
+      <van-cell-group border="{{false}}">
+        <van-field
+          value="{{ formData.realName }}"
+          label="真实姓名"
+          placeholder="请输入真实姓名"
+          required
+          clearable
+          bind:change="onFieldChange"
+          data-field="realName"
+          border="{{ false }}"
+          custom-style="margin-bottom: 12px; background: white; border-radius: 8px;"
+        />
+
+        <view bindtap="showBirthdayPicker">
+          <van-field
+            value="{{ formData.birthday }}"
+            label="出生日期"
+            placeholder="请选择出生日期"
+            required
+            readonly
+            is-link
+            border="{{ false }}"
+            custom-style="margin-bottom: 12px; background: white; border-radius: 8px;"
+          />
+        </view>
+
+        <van-field
+          value="{{ formData.nativePlace }}"
+          label="籍贯"
+          placeholder="请输入籍贯（如：湖南长沙）"
+          clearable
+          bind:change="onFieldChange"
+          data-field="nativePlace"
+          border="{{ false }}"
+          custom-style="margin-bottom: 12px; background: white; border-radius: 8px;"
+        />
+
+        <view bindtap="showEducationPicker">
+          <van-field
+            value="{{ formData.education }}"
+            label="学历"
+            placeholder="请选择学历"
+            readonly
+            is-link
+            border="{{ false }}"
+            custom-style="margin-bottom: 12px; background: white; border-radius: 8px;"
+          />
+        </view>
+
+        <van-field
+          value="{{ formData.ethnicity }}"
+          label="民族"
+          placeholder="请输入民族（如：汉族）"
+          clearable
+          bind:change="onFieldChange"
+          data-field="ethnicity"
+          border="{{ false }}"
+          custom-style="margin-bottom: 12px; background: white; border-radius: 8px;"
+        />
+
+        <van-field
+          value="{{ formData.workYears }}"
+          type="digit"
+          label="从业年限"
+          placeholder="请输入从业年限（年）"
+          clearable
+          bind:change="onFieldChange"
+          data-field="workYears"
+          border="{{ false }}"
+          custom-style="margin-bottom: 12px; background: white; border-radius: 8px;"
+        />
+      </van-cell-group>
+
+      <!-- 性别选择 -->
+      <view class="gender-section">
+        <view class="section-label">
+          <text>性别</text>
+          <text class="required-star">*</text>
+        </view>
+        <van-radio-group value="{{ formData.gender }}" bind:change="onGenderChange" direction="horizontal">
+          <van-radio name="1" checked-color="#1989fa" custom-style="margin-right: 48px;">男</van-radio>
+          <van-radio name="2" checked-color="#1989fa">女</van-radio>
+        </van-radio-group>
+      </view>
+    </view>
+
+    <!-- 步骤 2: 证件认证 -->
+    <view class="step-panel" wx:if="{{ currentStep === 1 }}">
+      <view class="panel-title">证件认证</view>
+      
+      <view class="upload-section">
+        <view class="upload-item">
+          <view class="upload-label">身份证正面 <text class="required-star">*</text></view>
+          <van-uploader
+            file-list="{{ idCardFrontList }}"
+            bind:after-read="onUploadIdCardFront"
+            bind:delete="onDeleteIdCardFront"
+            max-count="1"
+            deletable
+          />
+          <view class="upload-hint">请上传清晰的身份证人像面</view>
+        </view>
+
+        <view class="upload-item">
+          <view class="upload-label">身份证反面 <text class="required-star">*</text></view>
+          <van-uploader
+            file-list="{{ idCardBackList }}"
+            bind:after-read="onUploadIdCardBack"
+            bind:delete="onDeleteIdCardBack"
+            max-count="1"
+            deletable
+          />
+          <view class="upload-hint">请上传清晰的身份证国徽面</view>
+        </view>
+
+        <view class="upload-item">
+          <view class="upload-label">护工资格证 <text class="required-star">*</text></view>
+          <van-uploader
+            file-list="{{ qualificationCertList }}"
+            bind:after-read="onUploadQualificationCert"
+            bind:delete="onDeleteQualificationCert"
+            max-count="1"
+            deletable
+          />
+          <view class="upload-hint">请上传护工资格证或相关证书</view>
+        </view>
+
+        <view class="upload-item">
+          <view class="upload-label">其他材料（选填）</view>
+          <van-uploader
+            file-list="{{ otherMaterialsList }}"
+            bind:after-read="onUploadOtherMaterials"
+            bind:delete="onDeleteOtherMaterials"
+            max-count="3"
+            multiple
+            deletable
+          />
+          <view class="upload-hint">可上传工作照、培训证书等（最多3张）</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 步骤 3: 服务城市 -->
+    <view class="step-panel" wx:if="{{ currentStep === 2 }}">
+      <view class="panel-title">服务城市</view>
+      
+      <van-cell-group border="{{false}}">
+        <view bindtap="chooseCity">
+          <van-field
+            value="{{ formData.cityName }}"
+            label="服务城市"
+            placeholder="请选择服务城市"
+            required
+            readonly
+            is-link
+            border="{{ false }}"
+            custom-style="margin-bottom: 12px; background: white; border-radius: 8px;"
+          />
+        </view>
+
+        <van-field
+          value="{{ formData.residentAddress }}"
+          label="常驻地址"
+          type="textarea"
+          placeholder="请输入详细地址"
+          required
+          autosize
+          clearable
+          bind:change="onFieldChange"
+          data-field="residentAddress"
+          border="{{ false }}"
+          custom-style="margin-bottom: 12px; background: white; border-radius: 8px;"
+        />
+      </van-cell-group>
+
+      <van-button
+        type="info"
+        size="small"
+        icon="location-o"
+        bind:click="getLocation"
+        loading="{{ locationLoading }}"
+        custom-style="margin: 24px 0;"
+      >
+        获取当前位置
+      </van-button>
+
+      <view class="location-info" wx:if="{{ formData.longitude && formData.latitude }}">
+        <van-icon name="passed" color="#07c160" size="16px" />
+        <text class="location-text">定位成功</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作按钮 -->
+  <view class="footer-actions">
+    <van-button
+      wx:if="{{ currentStep > 0 }}"
+      type="default"
+      size="large"
+      bind:click="prevStep"
+      custom-style="flex: 1; margin-right: 12px;"
+    >
+      上一步
+    </van-button>
+
+    <van-button
+      wx:if="{{ currentStep < 2 }}"
+      type="info"
+      size="large"
+      bind:click="nextStep"
+      custom-style="flex: 1;"
+    >
+      下一步
+    </van-button>
+
+    <van-button
+      wx:if="{{ currentStep === 2 }}"
+      type="info"
+      size="large"
+      loading="{{ submitting }}"
+      loading-text="提交中..."
+      bind:click="submitApplication"
+      custom-style="flex: 1;"
+    >
+      提交申请
+    </van-button>
+  </view>
+
+  <!-- 日期选择器 -->
+  <van-popup show="{{ showBirthdayPopup }}" position="bottom" bind:close="closeBirthdayPicker">
+    <van-datetime-picker
+      type="date"
+      value="{{ birthdayValue }}"
+      min-date="{{ minDate }}"
+      max-date="{{ maxDate }}"
+      bind:confirm="onBirthdayConfirm"
+      bind:cancel="closeBirthdayPicker"
+    />
+  </van-popup>
+
+  <!-- 学历选择器 -->
+  <van-popup show="{{ showEducationPopup }}" position="bottom" bind:close="closeEducationPicker">
+    <van-picker
+      columns="{{ educationOptions }}"
+      bind:confirm="onEducationConfirm"
+      bind:cancel="closeEducationPicker"
+    />
+  </van-popup>
+
+  <!-- Toast提示 -->
+  <van-toast id="van-toast" />
+</view>

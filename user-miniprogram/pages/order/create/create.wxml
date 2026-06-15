@@ -1,0 +1,140 @@
+<view class="page">
+  <!-- 系统匹配：服务包信息 + 服务方式/数量/匹配距离/时间/地址/对象/联系人/对护工要求/备注 -->
+  <view class="block service-block">
+    <view class="service-row">
+      <image class="service-cover" src="{{packageInfo.coverImage || ''}}" mode="aspectFill" />
+      <view class="service-info">
+        <text class="service-name">{{packageInfo.name || '服务包'}}</text>
+        <text class="service-desc">{{packageInfo.description || ''}}</text>
+        <text class="service-sales">已售 {{packageInfo.sales || 0}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="block">
+    <text class="block-title">选择服务方式</text>
+    <view class="method-list">
+      <view class="method-item {{selectedMethod.key === item.key ? 'active' : ''}}" wx:for="{{packageInfo.methods}}" wx:key="key" bindtap="selectMethod" data-method="{{item}}">
+        <text class="method-name">{{item.name}}</text>
+        <text class="method-price">¥{{item.price}}/{{item.unit}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="block">
+    <view class="row-between">
+      <text class="row-label">购买数量</text>
+      <view class="stepper">
+        <text class="stepper-btn" bindtap="minusQty">－</text>
+        <text class="stepper-num">{{quantity}}</text>
+        <text class="stepper-btn" bindtap="plusQty">＋</text>
+      </view>
+    </view>
+    <view class="row-between">
+      <text class="row-label">匹配距离(km)</text>
+      <input class="input-short" type="digit" placeholder="5" value="{{matchDistance}}" maxlength="2" bindinput="onMatchDistance" />
+    </view>
+  </view>
+
+  <view class="block">
+    <text class="block-title">上门时间</text>
+    <picker mode="date" value="{{expectDate}}" start="{{minDate}}" bindchange="onExpectDateChange">
+      <view class="row-arrow">
+        <view class="row-left">
+          <text class="row-icon">📅</text>
+          <view>
+            <text class="row-label">日期</text>
+            <text class="row-value sub {{!expectDate ? 'placeholder' : ''}}">{{expectDate || '请选择日期'}}</text>
+          </view>
+        </view>
+        <text class="arrow">›</text>
+      </view>
+    </picker>
+    <picker mode="time" value="{{expectTimeOnly}}" bindchange="onExpectTimeChange">
+      <view class="row-arrow">
+        <view class="row-left">
+          <text class="row-icon">🕐</text>
+          <view>
+            <text class="row-label">时间</text>
+            <text class="row-value sub {{!expectTimeOnly ? 'placeholder' : ''}}">{{expectTimeOnly || '请选择时间'}}</text>
+          </view>
+        </view>
+        <text class="arrow">›</text>
+      </view>
+    </picker>
+  </view>
+
+  <view class="block">
+    <text class="block-title">服务信息</text>
+    <view class="info-card" bindtap="chooseAddress">
+      <view class="info-header">
+        <image class="info-icon-img" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E5%AE%9A%E4%BD%8D-%E4%BD%8D%E7%BD%AE.png" mode="aspectFit"></image>
+        <text class="info-title">服务地址</text>
+        <text class="info-action">{{detailAddress ? '更换' : '选择'}}</text>
+      </view>
+      <view class="info-content">
+        <text class="info-text {{!detailAddress ? 'placeholder' : ''}}">{{detailAddress || '请选择服务地址'}}</text>
+      </view>
+    </view>
+    <view class="info-card" bindtap="chooseClient">
+      <view class="info-header">
+        <text class="info-icon">👤</text>
+        <text class="info-title">服务对象</text>
+        <text class="info-action">{{clientName ? '更换' : '选择'}}</text>
+      </view>
+      <view class="info-content">
+        <text class="info-text {{!clientName ? 'placeholder' : ''}}">{{clientName || '请选择服务对象'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="block">
+    <text class="block-title">联系人</text>
+    <view class="row-input"><input class="input" placeholder="请填写姓名" value="{{contactName}}" bindinput="onContactName" /></view>
+    <view class="row-input"><input class="input" type="number" placeholder="手机号" value="{{contactPhone}}" bindinput="onContactPhone" /></view>
+  </view>
+
+  <view class="block">
+    <text class="block-title">对护工的要求</text>
+    <view class="req-row">
+      <text class="req-label">性别</text>
+      <view class="req-options">
+        <text class="req-opt {{reqGender === item ? 'active' : ''}}" wx:for="{{genderOptions}}" wx:key="*this" data-val="{{item}}" bindtap="setReqGender">{{item}}</text>
+      </view>
+    </view>
+    <view class="req-row">
+      <text class="req-label">从业年限</text>
+      <view class="req-options">
+        <text class="req-opt {{reqExperience === item ? 'active' : ''}}" wx:for="{{experienceOptions}}" wx:key="*this" data-val="{{item}}" bindtap="setReqExperience">{{item}}</text>
+      </view>
+    </view>
+    <view class="req-row req-row-picker">
+      <text class="req-label">籍贯</text>
+      <picker mode="selector" range="{{originOptions}}" value="{{originIndex}}" bindchange="onOriginChange">
+        <view class="req-picker-wrap">
+          <text class="req-picker">{{originOptions[originIndex] || '请选择籍贯'}}</text>
+          <text class="req-picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <view class="block">
+    <text class="block-title">预约备注</text>
+    <textarea class="textarea" placeholder="请输入备注信息（选填）" value="{{remarks}}" bindinput="onRemarks" />
+  </view>
+
+  <view class="bottom-bar">
+    <view class="terms-row">
+      <checkbox checked="{{agreedToTerms}}" bindtap="toggleTerms" />
+      <text class="terms-text">同意《护联服务协议》</text>
+    </view>
+    <view class="bottom-inner">
+      <view class="total-wrap">
+        <text class="total-label">金额：</text>
+        <text class="total-num">¥{{totalAmount}}</text>
+      </view>
+      <button class="btn-primary submit" bindtap="onSubmit" loading="{{loading}}">预约</button>
+    </view>
+  </view>
+</view>

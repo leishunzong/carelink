@@ -1,0 +1,49 @@
+<view class="page">
+  <!-- 封面图 -->
+  <view class="cover-wrap">
+    <image class="cover" src="{{detail.coverImage || detail.image || ''}}" mode="aspectFill" />
+  </view>
+
+  <!-- 服务基本信息 -->
+  <view class="block info-block">
+    <text class="name">{{detail.name}}</text>
+    <text class="desc">{{detail.description || '专业护理，贴心服务'}}</text>
+    <text class="sales">已售{{detail.sales || 0}}件</text>
+  </view>
+
+  <!-- 服务方式 -->
+  <view class="block">
+    <text class="block-title">服务方式</text>
+    <view class="method-list">
+      <view class="method-item" wx:for="{{detail.methods}}" wx:key="name">
+        <text class="method-name">{{item.name}}</text>
+        <text class="method-price">¥{{item.price}}/{{item.unit}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 服务详情（详细描述） -->
+  <view class="block">
+    <text class="block-title">服务详情</text>
+    <text class="detail-content">{{detail.detailedDescription || detail.detail || '暂无详细说明'}}</text>
+  </view>
+
+  <!-- 平台保障 -->
+  <view class="block">
+    <text class="block-title">平台保障</text>
+    <view class="guarantee-row">
+      <view class="guarantee-item">
+        <view class="guarantee-icon">👩‍⚕️</view>
+        <text class="guarantee-text">护工专业性培训</text>
+      </view>
+      <view class="guarantee-item">
+        <view class="guarantee-icon">👁️</view>
+        <text class="guarantee-text">订单资金监管</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-bar">
+    <button class="btn-primary book" bindtap="goBook">预约服务</button>
+  </view>
+</view>

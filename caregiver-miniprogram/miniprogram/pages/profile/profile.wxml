@@ -1,0 +1,74 @@
+<view class="profile-container">
+  <!-- 顶部背景 -->
+  <view class="header-bg"></view>
+
+  <!-- 个人信息卡片 - 可点击进入编辑 -->
+  <view class="user-card" bindtap="goToProfile">
+    <!-- 头像和基本信息 -->
+    <view class="user-header">
+      <image wx:if="{{ userInfo.avatar }}" class="avatar" src="{{ userInfo.avatar }}" mode="aspectFill"></image>
+      <view wx:else class="avatar avatar-placeholder">
+        <text class="avatar-text">{{ userInfo.realName ? userInfo.realName.substring(0, 1) : '?' }}</text>
+      </view>
+      
+      <view class="user-info">
+        <view class="name-row">
+          <text class="user-name">{{ userInfo.realName || '未设置' }}</text>
+          <view wx:if="{{ userInfo.verifyStatus === 1 }}" class="status-badge status-approved">已认证</view>
+          <view wx:elif="{{ userInfo.verifyStatus === 0 }}" class="status-badge status-pending">待审核</view>
+          <view wx:elif="{{ userInfo.verifyStatus === 2 }}" class="status-badge status-rejected">未通过</view>
+        </view>
+        <text class="user-phone">{{ userInfo.phone }}</text>
+        
+        <!-- 浓缩的个人信息 -->
+        <view class="user-details">
+          <view class="detail-item">年龄: <text class="value">{{ userInfo.age || '-' }}岁</text></view>
+          <view class="detail-item">学历: <text class="value">{{ userInfo.education || '-' }}</text></view>
+          <view class="detail-item">籍贯: <text class="value">{{ userInfo.nativePlace || '-' }}</text></view>
+          <view class="detail-item">从业: <text class="value">{{ userInfo.workYears || '-' }}年</text></view>
+        </view>
+      </view>
+      
+      <text class="arrow">›</text>
+    </view>
+
+    <!-- 统计数据 -->
+    <view class="stats-section">
+      <view class="stat-item">
+        <view class="stat-value green">{{ stats.positiveRate }}%</view>
+        <view class="stat-label">好评率</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value blue">{{ stats.completedOrders }}</view>
+        <view class="stat-label">完单量</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value purple">{{ stats.reviewCount }}</view>
+        <view class="stat-label">评论数</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value red">{{ stats.noShowCount }}</view>
+        <view class="stat-label">爽约数</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 更多功能 -->
+  <view class="more-section">
+    <view class="section-title">更多功能</view>
+    <view class="menu-card">
+      <view class="menu-item" wx:for="{{ moreOptions }}" wx:key="label" bindtap="handleMenuClick" data-action="{{ item.action }}">
+        <view class="icon-box icon-{{ item.bg }}">
+          <text class="icon {{ item.color }}">{{ item.icon }}</text>
+        </view>
+        <text class="menu-label">{{ item.label }}</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-section">
+    <van-button type="danger" plain round block bind:click="handleLogout">退出登录</van-button>
+  </view>
+</view>

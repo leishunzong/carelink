@@ -1,0 +1,18 @@
+<view class="page">
+  <view class="loading" wx:if="{{loading}}">加载中...</view>
+  <view class="card" wx:elif="{{detail.id}}">
+    <view class="head">
+      <text class="caregiver">{{detail.caregiverName}}</text>
+      <text class="type {{detail.type}}">{{detail.type === 'positive' ? '好评' : '差评'}}</text>
+    </view>
+    <text class="service">{{detail.serviceName}}</text>
+    <text class="order-no">订单号：{{detail.orderNo}}</text>
+    <view class="stars">★ {{detail.rating}} 分</view>
+    <view class="tags" wx:if="{{detail.tags && detail.tags.length}}">
+      <text class="tag" wx:for="{{detail.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text>
+    </view>
+    <view class="content">{{detail.content}}</view>
+    <view class="time">{{detail.createdAt}}</view>
+  </view>
+  <view class="empty" wx:else>评价不存在</view>
+</view>

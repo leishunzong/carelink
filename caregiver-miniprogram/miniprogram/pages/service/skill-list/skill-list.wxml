@@ -1,0 +1,99 @@
+<view class="skill-list-container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <van-search
+      value="{{ keyword }}"
+      placeholder="搜索技能名称"
+      bind:change="onSearchChange"
+      bind:search="onSearch"
+      bind:clear="onClearSearch"
+    />
+  </view>
+
+  <!-- 分类筛选 -->
+  <scroll-view scroll-x class="category-scroll">
+    <view class="category-list">
+      <view
+        wx:for="{{ categories }}"
+        wx:key="id"
+        class="category-item {{ activeCategory === item.id ? 'active' : '' }}"
+        bindtap="onCategoryChange"
+        data-id="{{ item.id }}"
+      >
+        {{ item.name }}
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 技能列表 -->
+  <scroll-view scroll-y class="skill-scroll">
+    <!-- 空状态 -->
+    <view wx:if="{{ filteredList.length === 0 && !loading }}" class="empty-state">
+      <view class="empty-icon">🏆</view>
+      <text class="empty-text">暂无技能数据</text>
+    </view>
+
+    <!-- 技能卡片列表 -->
+    <view
+      wx:for="{{ filteredList }}"
+      wx:key="id"
+      class="skill-card"
+    >
+      <view class="skill-header">
+        <text class="skill-name">{{ item.skillName }}</text>
+        <!-- 状态标签 -->
+        <block wx:if="{{ item.applied }}">
+          <view wx:if="{{ item.auditStatus === 0 }}" class="status-tag pending">审核中</view>
+          <view wx:elif="{{ item.auditStatus === 1 }}" class="status-tag approved">已通过</view>
+          <view wx:elif="{{ item.auditStatus === 2 }}" class="status-tag rejected">已拒绝</view>
+          <view wx:else class="status-tag approved">已申请</view>
+        </block>
+        <view wx:else class="audit-tag {{ item.needAudit === 1 ? 'need-audit' : 'no-audit' }}">
+          {{ item.needAudit === 1 ? '需审核' : '无需审核' }}
+        </view>
+      </view>
+
+      <view class="skill-category">
+        <text class="category-tag">{{ item.skillType === 1 ? '临床医疗护理' : item.skillType === 2 ? '基础生活照料' : item.skillType === 3 ? '康复训练与介护' : item.skillType === 4 ? '失智专项护理' : item.skillType === 5 ? '居家安全与应急' : '精神慰藉与社交' }}</text>
+      </view>
+
+      <view wx:if="{{ item.description }}" class="skill-desc">
+        <text>{{ item.description }}</text>
+      </view>
+
+      <!-- 审核被拒绝提示 -->
+      <view wx:if="{{ item.applied && item.auditStatus === 2 }}" class="reject-tip">
+        <text>审核未通过，可删除后重新申请</text>
+      </view>
+
+      <view class="skill-action">
+        <!-- 已申请：显示删除按钮 -->
+        <view
+          wx:if="{{ item.applied }}"
+          class="delete-btn"
+          bindtap="onDeleteSkill"
+          data-id="{{ item.id }}"
+          data-name="{{ item.skillName }}"
+        >
+          删除
+        </view>
+        <!-- 未申请：显示申请按钮 -->
+        <view
+          wx:else
+          class="apply-btn"
+          bindtap="handleApplySkill"
+          data-id="{{ item.id }}"
+          data-name="{{ item.skillName }}"
+          data-need-audit="{{ item.needAudit }}"
+        >
+          申请
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载状态 -->
+    <view wx:if="{{ loading }}" class="loading-tip">
+      <van-loading size="24px">加载中...</van-loading>
+    </view>
+  </scroll-view>
+</view>

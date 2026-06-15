@@ -1,0 +1,52 @@
+<view class="page">
+  <!-- 第一张卡片：联系人、手机号 -->
+  <view class="block">
+    <view class="row">
+      <text class="label">收货人</text>
+      <input class="input" placeholder="请输入收货人" value="{{contactName}}" bindinput="onContactInput" />
+    </view>
+    <view class="row">
+      <text class="label">手机号</text>
+      <input class="input" type="number" maxlength="11" placeholder="请输入手机号" value="{{contactPhone}}" bindinput="onPhoneInput" />
+    </view>
+  </view>
+
+  <!-- 第二张卡片：地址（实时定位 / 手动输入） -->
+  <view class="block block-address">
+    <view class="tabs">
+      <view class="tab {{addressMode === 'map' ? 'active' : ''}}" bindtap="onAddressModeChange" data-mode="map">实时定位</view>
+      <view class="tab {{addressMode === 'manual' ? 'active' : ''}}" bindtap="onAddressModeChange" data-mode="manual">手动输入</view>
+    </view>
+    <view class="address-body">
+      <view class="row">
+        <text class="label">地址</text>
+        <block wx:if="{{addressMode === 'map'}}">
+          <view class="value-wrap">
+            <text class="value {{addressText ? '' : 'placeholder'}}">{{addressText || '点击右侧图标进行定位'}}</text>
+          </view>
+          <view class="location-icon-wrap" catchtap="onLocationTap">
+            <image class="location-icon" src="https://zlisten-1323337406.cos.ap-beijing.myqcloud.com/images/%E5%AE%9A%E4%BD%8D-%E4%BD%8D%E7%BD%AE.png" mode="aspectFit"></image>
+          </view>
+        </block>
+        <input wx:else class="input" placeholder="请输入省市区、街道等详细地址" value="{{addressText}}" bindinput="onAddressInput" />
+      </view>
+      <view class="row">
+        <text class="label">门牌号</text>
+        <input class="input" placeholder="例：10号楼6单元1001室" value="{{doorNumber}}" bindinput="onDoorNumberInput" />
+      </view>
+    </view>
+  </view>
+
+  <!-- 第三张卡片：设为默认地址 -->
+  <view class="block">
+    <view class="row switch-row">
+      <view class="default-label-wrap">
+        <text class="label">设为默认地址</text>
+        <text class="default-tip">提醒: 下单时会优先使用该地址</text>
+      </view>
+      <switch checked="{{isDefault}}" color="#3B82F6" bindchange="onDefaultChange" />
+    </view>
+  </view>
+
+  <button class="btn-primary save-btn" bindtap="onSave">确认</button>
+</view>

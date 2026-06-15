@@ -1,0 +1,167 @@
+<view class="container" wx:if="{{ !loading && order }}">
+  <!-- 订单状态卡片 -->
+  <view class="status-card" style="background: {{ statusMap[order.status].bg }};">
+    <van-icon name="{{ statusMap[order.status].icon }}" size="44px" color="{{ statusMap[order.status].color }}" />
+    <view class="status-info">
+      <view class="status-text" style="color: {{ statusMap[order.status].color }};">{{ statusMap[order.status].text }}</view>
+      <view class="status-desc">订单编号: {{ order.orderNo }}</view>
+    </view>
+    <view class="order-type-tag {{ order.orderType === 1 ? 'system' : 'direct' }}">
+      {{ order.orderType === 1 ? '系统匹配' : '定向预约' }}
+    </view>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="section">
+    <view class="section-title">
+      <van-icon name="orders-o" color="#3b82f6" size="18px" />
+      <text>基本信息</text>
+    </view>
+    <view class="info-list">
+      <view class="info-row">
+        <text class="label">订单编号</text>
+        <text class="value">{{ order.orderNo }}</text>
+      </view>
+      <view class="info-row">
+        <text class="label">订单类型</text>
+        <text class="value">{{ order.orderType === 1 ? '系统匹配' : '定向预约' }}</text>
+      </view>
+      <view class="info-row" wx:if="{{ order.contactName }}">
+        <text class="label">联系人</text>
+        <text class="value">{{ order.contactName }}</text>
+      </view>
+      <view class="info-row" wx:if="{{ order.contactPhone }}">
+        <text class="label">联系电话</text>
+        <text class="value link" bindtap="onCallPhone" data-phone="{{ order.contactPhone }}">
+          {{ order.contactPhone }}
+          <van-icon name="phone-o" size="14px" />
+        </text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 服务包信息 -->
+  <view class="section">
+    <view class="section-title">
+      <van-icon name="bag-o" color="#3b82f6" size="18px" />
+      <text>服务包信息</text>
+    </view>
+    <view class="package-card">
+      <view class="package-row">
+        <text class="package-name">{{ order.packageName }}</text>
+        <text class="package-type-tag">{{ order.packageTypeName }}</text>
+      </view>
+      <view class="package-price-row">
+        <text class="package-price">¥{{ order.price }} × {{ order.buyQuantity }}</text>
+        <text class="package-total">总计: ¥{{ order.totalAmount }}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 服务对象信息 -->
+  <view class="section" wx:if="{{ order.clientName }}">
+    <view class="section-title">
+      <van-icon name="friends-o" color="#3b82f6" size="18px" />
+      <text>服务对象</text>
+    </view>
+    <view class="info-list">
+      <view class="info-row">
+        <text class="label">姓名</text>
+        <text class="value">{{ order.clientName }}</text>
+      </view>
+      <view class="info-row" wx:if="{{ order.clientGender }}">
+        <text class="label">性别</text>
+        <text class="value">{{ order.clientGender === 1 ? '男' : '女' }}</text>
+      </view>
+      <view class="info-row" wx:if="{{ order.clientAge }}">
+        <text class="label">年龄</text>
+        <text class="value">{{ order.clientAge }}岁</text>
+      </view>
+      <view class="info-row" wx:if="{{ order.intellectualAbilityText }}">
+        <text class="label">智力状况</text>
+        <text class="value">{{ order.intellectualAbilityText }}</text>
+      </view>
+      <view class="info-row" wx:if="{{ order.selfCareAbilityText }}">
+        <text class="label">自理能力</text>
+        <text class="value">{{ order.selfCareAbilityText }}</text>
+      </view>
+      <view class="info-row" wx:if="{{ order.medicalHistory }}">
+        <text class="label">病史</text>
+        <text class="value">{{ order.medicalHistory }}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 服务地址与时间 -->
+  <view class="section">
+    <view class="section-title">
+      <van-icon name="location-o" color="#3b82f6" size="18px" />
+      <text>服务地址</text>
+    </view>
+    <view class="address-card" bindtap="onViewLocation">
+      <view class="address-text">{{ order.address || '暂无地址' }}</view>
+      <van-icon name="guide-o" size="18px" color="#3b82f6" />
+    </view>
+    <view class="time-info" wx:if="{{ order.expectStartTime }}">
+      <van-icon name="clock-o" size="14px" color="#f97316" />
+      <text class="time-text">上门时间: {{ order.expectStartTime }}</text>
+    </view>
+  </view>
+
+  <!-- 系统匹配要求 -->
+  <view class="section" wx:if="{{ order.orderType === 1 && (order.matchRadius || order.requirementAge || order.requirementGender || order.requirementOrigin) }}">
+    <view class="section-title">
+      <van-icon name="aim" color="#3b82f6" size="18px" />
+      <text>匹配要求</text>
+    </view>
+    <view class="requirement-grid">
+      <view class="req-item" wx:if="{{ order.matchRadius }}">
+        <text class="req-label">半径</text>
+        <text class="req-value">{{ order.matchRadius }}km</text>
+      </view>
+      <view class="req-item" wx:if="{{ order.requirementAge }}">
+        <text class="req-label">年龄</text>
+        <text class="req-value">{{ order.requirementAge }}</text>
+      </view>
+      <view class="req-item" wx:if="{{ order.requirementGender }}">
+        <text class="req-label">性别</text>
+        <text class="req-value">{{ order.requirementGender }}</text>
+      </view>
+      <view class="req-item" wx:if="{{ order.requirementOrigin }}">
+        <text class="req-label">籍贯</text>
+        <text class="req-value">{{ order.requirementOrigin }}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class="section" wx:if="{{ order.specialRemark }}">
+    <view class="section-title">
+      <van-icon name="comment-o" color="#3b82f6" size="18px" />
+      <text>备注</text>
+    </view>
+    <view class="remark-card">
+      <text>{{ order.specialRemark }}</text>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar" wx:if="{{ order.status === 3 || order.status === 4 }}">
+    <van-button wx:if="{{ order.status === 3 }}" type="warning" size="large" round bind:click="onStartService">
+      上门打卡
+    </van-button>
+    <van-button wx:if="{{ order.status === 4 }}" type="primary" size="large" round bind:click="onFinishService">
+      完成服务
+    </van-button>
+  </view>
+</view>
+
+<!-- 加载中 -->
+<view wx:if="{{ loading }}" class="loading-container">
+  <van-loading size="24px" vertical>加载中...</van-loading>
+</view>
+
+<!-- 空状态 -->
+<view wx:if="{{ !loading && !order }}" class="empty-container">
+  <van-empty description="订单不存在" />
+</view>

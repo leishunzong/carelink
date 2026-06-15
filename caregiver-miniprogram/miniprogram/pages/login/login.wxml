@@ -1,0 +1,51 @@
+<view class="login-container">
+  <!-- 登录卡片 -->
+  <view class="login-card">
+    <view class="card-header">
+      <view class="title">护工登录</view>
+      <view class="subtitle">欢迎回来</view>
+    </view>
+    
+    <!-- 登录表单 -->
+    <view class="login-form">
+      <view class="form-item">
+        <view class="label">用户名</view>
+        <input 
+          class="input" 
+          type="text" 
+          placeholder="请输入用户名"
+          value="{{ username }}"
+          bindinput="onUsernameChange"
+        />
+      </view>
+      
+      <view class="form-item">
+        <view class="label">密码</view>
+        <view class="password-wrapper">
+          <input 
+            class="input password-input" 
+            type="{{ showPassword ? 'text' : 'password' }}" 
+            placeholder="请输入密码"
+            value="{{ password }}"
+            bindinput="onPasswordChange"
+          />
+          <view class="toggle-password" bindtap="togglePassword">
+            <text>{{ showPassword ? '显示' : '隐藏' }}</text>
+          </view>
+        </view>
+      </view>
+      
+      <button 
+        class="login-btn {{ loading ? 'loading' : '' }}" 
+        bindtap="handleLogin"
+        disabled="{{ loading }}"
+      >
+        {{ loading ? '登录中...' : '登录' }}
+      </button>
+      
+      <view class="footer-link">
+        <text class="link-text" bindtap="goToRegister">还没有账号？去注册</text>
+      </view>
+    </view>
+  </view>
+</view>

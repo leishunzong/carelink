@@ -1,0 +1,183 @@
+/* pages/profile/earnings/earnings.wxss */
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* 收益概览 */
+.earnings-summary {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 60rpx 32rpx;
+  color: white;
+}
+
+.summary-item {
+  flex: 1;
+  text-align: center;
+}
+
+.summary-value {
+  font-size: 48rpx;
+  font-weight: bold;
+  margin-bottom: 12rpx;
+}
+
+.summary-label {
+  font-size: 26rpx;
+  opacity: 0.8;
+}
+
+.summary-divider {
+  width: 1rpx;
+  height: 60rpx;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 提现区域 */
+.withdraw-section {
+  padding: 32rpx;
+  background: white;
+  margin-bottom: 16rpx;
+}
+
+/* 筛选栏 */
+.filter-bar {
+  background: white;
+  margin-bottom: 16rpx;
+}
+
+/* 收益列表 */
+.earnings-list {
+  padding: 0 32rpx;
+}
+
+.earnings-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.item-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.item-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24rpx;
+  font-size: 36rpx;
+}
+
+.item-icon.income {
+  background: #e8f5e9;
+  color: #4caf50;
+}
+
+.item-icon.withdraw {
+  background: #fff3e0;
+  color: #ff9800;
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-title {
+  font-size: 30rpx;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.item-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.item-right {
+  text-align: right;
+}
+
+.item-amount {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.item-amount.income {
+  color: #4caf50;
+}
+
+.item-amount.withdraw {
+  color: #ff9800;
+}
+
+.item-status {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 空状态 */
+van-empty {
+  margin-top: 200rpx;
+}
+
+/* 加载更多 */
+.load-more {
+  display: flex;
+  justify-content: center;
+  padding: 40rpx 0;
+}
+
+/* 弹窗内容 */
+.dialog-content {
+  padding: 32rpx;
+}
+
+.withdraw-balance {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx;
+  background: #f5f5f5;
+  border-radius: 8rpx;
+  margin-bottom: 24rpx;
+}
+
+.balance-label {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.balance-value {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #ff6b6b;
+}
+
+.withdraw-tips {
+  display: flex;
+  align-items: center;
+  margin-top: 24rpx;
+  padding: 16rpx;
+  background: #fff8e1;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  color: #f57c00;
+}
+
+.withdraw-tips van-icon {
+  margin-right: 8rpx;
+}
