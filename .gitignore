@@ -37,6 +37,9 @@ backend/build/
 .env.*
 !.env.example
 
+# Local git worktrees
+.worktrees/
+
 # Archives and local thesis/prototype materials
 *.zip
 *.rar
