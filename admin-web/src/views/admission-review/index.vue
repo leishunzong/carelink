@@ -88,7 +88,7 @@
         </el-descriptions-item>
       </el-descriptions>
 
-      <div class="material-images">
+      <div v-if="currentRow" class="material-images">
         <h3>审核材料</h3>
         <div class="image-list">
           <div class="image-item">

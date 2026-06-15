@@ -36,4 +36,6 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build admin web
         working-directory: admin-web
-        run: pnpm build
+        run: |
+          pnpm typecheck
+          pnpm build

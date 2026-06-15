@@ -48,7 +48,7 @@
           <el-input
             v-model="formData.content"
             type="textarea"
-            rows="10"
+            :rows="10"
             placeholder="请输入文档内容"
           />
         </el-form-item>
@@ -155,7 +155,7 @@ const handleFileUpload = async (file: File) => {
   return false // 阻止默认上传行为
 }
 
-const handleDelete = async (row: any) => {
+const handleDelete = async (row: RagDocument) => {
   try {
     await ElMessageBox.confirm(`确认删除该文档吗？`, '确认删除', {
       type: 'warning'

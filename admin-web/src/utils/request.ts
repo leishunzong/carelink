@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import type { AxiosInstance, AxiosResponse } from 'axios'
 import { ElMessage } from 'element-plus'
 import router from '@/router'
 
@@ -92,4 +92,15 @@ service.interceptors.response.use(
   }
 )
 
-export default service
+export default service as Omit<AxiosInstance, 'request' | 'get' | 'delete' | 'head' | 'options' | 'post' | 'put' | 'patch'> & {
+  request<T = unknown>(config: Parameters<AxiosInstance['request']>[0]): Promise<T>
+  get<T = unknown>(url: string, config?: Parameters<AxiosInstance['get']>[1]): Promise<T>
+  delete<T = unknown>(url: string, config?: Parameters<AxiosInstance['delete']>[1]): Promise<T>
+  head<T = unknown>(url: string, config?: Parameters<AxiosInstance['head']>[1]): Promise<T>
+  options<T = unknown>(url: string, config?: Parameters<AxiosInstance['options']>[1]): Promise<T>
+  post<T = unknown>(url: string, data?: unknown, config?: Parameters<AxiosInstance['post']>[2]): Promise<T>
+  put<T = unknown>(url: string, data?: unknown, config?: Parameters<AxiosInstance['put']>[2]): Promise<T>
+  patch<T = unknown>(url: string, data?: unknown, config?: Parameters<AxiosInstance['patch']>[2]): Promise<T>
+  <T = unknown>(config: Parameters<AxiosInstance['request']>[0]): Promise<T>
+  <T = unknown>(url: string, config?: Parameters<AxiosInstance['request']>[0]): Promise<T>
+}

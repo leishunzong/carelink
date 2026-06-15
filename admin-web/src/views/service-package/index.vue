@@ -239,7 +239,6 @@ const submitLoading = ref(false)
 const skillList = ref<any[]>([])
 const billingMethods = ref<string[]>([])
 const imageUploading = ref(false)
-const uploadRef = ref<any>(null)
 
 // 详情对话框
 const detailVisible = ref(false)

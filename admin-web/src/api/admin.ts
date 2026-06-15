@@ -426,6 +426,17 @@ export interface ServicePackage {
   updateTime: string
 }
 
+export type ServicePackagePayload = Omit<
+  Partial<ServicePackage>,
+  'category' | 'allowMonth' | 'allowDay' | 'allowHour' | 'allowTimes'
+> & {
+  category?: number
+  allowMonth?: number
+  allowDay?: number
+  allowHour?: number
+  allowTimes?: number
+}
+
 // 获取服务包列表（分页）
 export const getPackagePage = (params: {
   category?: number
@@ -447,7 +458,7 @@ export const getPackagePage = (params: {
 }
 
 // 新增服务包
-export const addPackage = (data: Partial<ServicePackage>) => {
+export const addPackage = (data: ServicePackagePayload) => {
   return request({
     url: '/admin/package',
     method: 'post',
@@ -456,7 +467,7 @@ export const addPackage = (data: Partial<ServicePackage>) => {
 }
 
 // 修改服务包
-export const updatePackage = (id: number, data: Partial<ServicePackage>) => {
+export const updatePackage = (id: number, data: ServicePackagePayload) => {
   return request({
     url: `/admin/package/${id}`,
     method: 'put',

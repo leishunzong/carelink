@@ -126,16 +126,26 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Search } from '@element-plus/icons-vue'
-import { getCaregiverList, type CaregiverListItem } from '@/api/admin'
+import { getCaregiverList, type CaregiverInfo } from '@/api/admin'
 
 const loading = ref(false)
-const searchForm = reactive({ realName: '', phone: '', gender: undefined as number | undefined })
-const tableData = ref<CaregiverListItem[]>([])
+const searchForm = reactive({
+  realName: '',
+  phone: '',
+  gender: undefined as number | undefined,
+  minAge: undefined as number | undefined,
+  maxAge: undefined as number | undefined,
+  education: '',
+  workYears: undefined as number | undefined,
+  cityName: '',
+  workState: undefined as number | undefined
+})
+const tableData = ref<CaregiverInfo[]>([])
 const pagination = reactive({ current: 1, size: 10, total: 0 })
 
 // 详情对话框
 const detailVisible = ref(false)
-const currentRow = ref<CaregiverListItem | null>(null)
+const currentRow = ref<CaregiverInfo | null>(null)
 
 const fetchData = async () => {
   loading.value = true
@@ -171,11 +181,17 @@ const handleReset = () => {
   searchForm.realName = ''
   searchForm.phone = ''
   searchForm.gender = undefined
+  searchForm.minAge = undefined
+  searchForm.maxAge = undefined
+  searchForm.education = ''
+  searchForm.workYears = undefined
+  searchForm.cityName = ''
+  searchForm.workState = undefined
   pagination.current = 1
   fetchData()
 }
 
-const handleView = (row: CaregiverListItem) => {
+const handleView = (row: CaregiverInfo) => {
   currentRow.value = row
   detailVisible.value = true
 }

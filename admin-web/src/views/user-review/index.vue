@@ -87,7 +87,12 @@ import { Search } from '@element-plus/icons-vue'
 import { getReviewList, type ReviewListItem } from '@/api/admin'
 
 const loading = ref(false)
-const searchForm = reactive({ caregiverName: '', nickname: '', stars: undefined as number | undefined })
+const searchForm = reactive({
+  caregiverName: '',
+  nickname: '',
+  orderNo: '',
+  stars: undefined as number | undefined
+})
 const tableData = ref<ReviewListItem[]>([])
 const pagination = reactive({ current: 1, size: 10, total: 0 })
 
@@ -101,6 +106,7 @@ const fetchData = async () => {
     const res = await getReviewList({
       caregiverName: searchForm.caregiverName || undefined,
       nickname: searchForm.nickname || undefined,
+      orderNo: searchForm.orderNo || undefined,
       current: pagination.current,
       size: pagination.size
     })

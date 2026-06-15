@@ -27,7 +27,7 @@
         <template #default="{ row }">
           <el-image
             :src="row.certImage"
-            :preview-src-list="[row.certImage]"
+            :preview-src-list="row.certImage ? [row.certImage] : []"
             fit="cover"
             style="width: 80px; height: 50px"
           />
@@ -83,7 +83,7 @@
 
       <div class="certificate-image">
         <h3>证书照片</h3>
-        <el-image :src="currentRow?.certImage" :preview-src-list="[currentRow?.certImage]" fit="contain" style="width: 100%; max-height: 400px" />
+        <el-image :src="currentRow?.certImage" :preview-src-list="currentRow?.certImage ? [currentRow.certImage] : []" fit="contain" style="width: 100%; max-height: 400px" />
       </div>
     </el-dialog>
 
