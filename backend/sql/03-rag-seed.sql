@@ -1,5 +1,5 @@
 -- RAG 知识库初始文档（护联系统）
--- 执行时机：在 init.sql 建表之后执行，或直接追加在 init.sql 中 rag_document 表创建语句之后
+-- 执行时机：在 01-schema.sql 建表之后执行
 -- 后续可由管理员通过 /admin/rag 接口上传或新增文档
 
 USE `care-link`;

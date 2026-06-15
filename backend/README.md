@@ -39,7 +39,9 @@
 ```
 care-link/
 ├── sql/
-│   └── init.sql                              # 数据库初始化脚本
+│   ├── 01-schema.sql                         # 数据库表结构脚本
+│   ├── 02-seed.sql                           # 演示数据脚本
+│   └── 03-rag-seed.sql                       # RAG 知识库演示数据
 ├── src/
 │   ├── main/
 │   │   ├── java/com/caregiver/carelink/
@@ -131,7 +133,7 @@ care-link/
 
 ### 环境要求
 
-- JDK 1.8+
+- JDK 17+
 - Maven 3.6+
 - MySQL 5.7+
 - Redis 7.4+ (或支持GEO命令的Redis版本)
@@ -141,7 +143,9 @@ care-link/
 1. 创建数据库并执行初始化脚本：
 
 ```bash
-mysql -u root -p < sql/init.sql
+mysql -u root -p < sql/01-schema.sql
+mysql -u root -p < sql/02-seed.sql
+mysql -u root -p < sql/03-rag-seed.sql
 ```
 
 2. 修改配置文件 `src/main/resources/application-dev.yml`：
@@ -149,7 +153,7 @@ mysql -u root -p < sql/init.sql
 ```yaml
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/care_link?...
+    url: jdbc:mysql://localhost:3306/care-link?...
     username: root
     password: your_password
   redis:

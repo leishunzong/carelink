@@ -13,6 +13,14 @@ services:
       - --collation-server=utf8mb4_unicode_ci
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./backend/sql/01-schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./backend/sql/02-seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+      - ./backend/sql/03-rag-seed.sql:/docker-entrypoint-initdb.d/03-rag-seed.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pcarelink"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   redis:
     image: redis:7
@@ -21,6 +29,48 @@ services:
       - "6379:6379"
     volumes:
       - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: carelink-backend
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DB_URL: "jdbc:mysql://mysql:3306/care-link?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull"
+      DB_USERNAME: root
+      DB_PASSWORD: carelink
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ""
+      DRUID_USERNAME: admin
+      DRUID_PASSWORD: change-me
+      JWT_SECRET: please-change-this-carelink-jwt-secret-at-least-32-bytes
+      COS_SECRET_ID: placeholder
+      COS_SECRET_KEY: placeholder
+      COS_REGION: ap-beijing
+      COS_BUCKET_NAME: carelink-demo
+      COS_BASE_URL: http://localhost:8080/mock-cos
+      AI_API_KEY: placeholder
+      AI_BASE_URL: https://api.moonshot.cn/v1
+      AI_MODEL_NAME: moonshot-v1-8k
+    ports:
+      - "8080:8080"
+
+  admin-web:
+    build: ./admin-web
+    container_name: carelink-admin-web
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
 
 volumes:
   mysql-data:

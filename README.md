@@ -11,7 +11,7 @@ CareLink 是一个基于 LBS 的居家养老护理撮合系统，包含后端服
 ├── user-miniprogram/        # 用户端微信小程序
 ├── caregiver-miniprogram/   # 护工端微信小程序
 ├── .github/workflows/       # GitHub Actions CI
-├── docker-compose.yml       # 本地 MySQL / Redis
+├── docker-compose.yml       # 本地一键启动
 └── .env.example             # 环境变量示例
 ```
 
@@ -21,7 +21,31 @@ CareLink 是一个基于 LBS 的居家养老护理撮合系统，包含后端服
 - 管理端：Vue 3、Vite、TypeScript、Element Plus、Pinia
 - 小程序：微信原生小程序、Vant Weapp
 
-## 快速启动
+## Docker 一键启动
+
+适合第一次体验项目，Docker 会自动启动 MySQL、Redis、后端服务和管理后台。
+
+```bash
+docker compose up --build
+```
+
+启动后访问：
+
+- 管理后台：`http://localhost:5173`
+- 后端接口：`http://localhost:8080/api`
+- 接口文档：`http://localhost:8080/api/doc.html`
+- Druid 监控：`http://localhost:8080/api/druid`
+
+数据库初始化脚本会在 MySQL 容器首次创建数据卷时自动执行。如果你修改了 SQL 并希望重新初始化数据，可以执行：
+
+```bash
+docker compose down -v
+docker compose up --build
+```
+
+Docker Compose 中使用了占位 COS 和 AI 配置，系统可以启动；文件上传和 AI 助手需要替换为真实 `COS_*` 和 `AI_*` 环境变量后才能正常调用外部服务。
+
+## 本地开发启动
 
 1. 准备环境变量：
 
@@ -38,9 +62,9 @@ docker compose up -d mysql redis
 3. 初始化数据库：
 
 ```bash
-mysql -h 127.0.0.1 -P 3306 -u root -pcarelink < backend/sql/init.sql
-mysql -h 127.0.0.1 -P 3306 -u root -pcarelink care-link < backend/sql/init_data.sql
-mysql -h 127.0.0.1 -P 3306 -u root -pcarelink care-link < backend/sql/rag_document_init.sql
+mysql -h 127.0.0.1 -P 3306 -u root -pcarelink < backend/sql/01-schema.sql
+mysql -h 127.0.0.1 -P 3306 -u root -pcarelink < backend/sql/02-seed.sql
+mysql -h 127.0.0.1 -P 3306 -u root -pcarelink < backend/sql/03-rag-seed.sql
 ```
 
 4. 启动后端：
@@ -62,7 +86,7 @@ pnpm dev
 
 ## 演示账号
 
-执行 `backend/sql/init_data.sql` 后可使用以下账号体验：
+执行 `backend/sql/02-seed.sql` 后可使用以下账号体验：
 
 | 端 | 用户名 | 密码 |
 | --- | --- | --- |
