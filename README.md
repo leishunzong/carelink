@@ -43,7 +43,7 @@ docker compose down -v
 docker compose up --build
 ```
 
-Docker Compose 中使用了占位 COS 和 AI 配置，系统可以启动；文件上传和 AI 助手需要替换为真实 `COS_*` 和 `AI_*` 环境变量后才能正常调用外部服务。
+Docker Compose 默认关闭 COS 和 AI 模型能力，系统可以在没有外部密钥的情况下启动。文件上传需要配置 `COS_ENABLED=true` 以及真实 `COS_*` 环境变量；AI 助手需要配置 `AI_MODEL_ENABLED=true` 以及真实 `AI_*` 环境变量。
 
 ## 本地开发启动
 

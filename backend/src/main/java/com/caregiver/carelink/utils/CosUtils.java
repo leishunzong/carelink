@@ -1,16 +1,17 @@
 package com.caregiver.carelink.utils;
 
+import com.caregiver.carelink.common.exception.BusinessException;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.ObjectMetadata;
 import com.qcloud.cos.model.PutObjectRequest;
-import com.qcloud.cos.model.PutObjectResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
@@ -26,7 +27,7 @@ public class CosUtils {
 
     private static final Logger log = LoggerFactory.getLogger(CosUtils.class);
 
-    @Resource
+    @Autowired(required = false)
     private COSClient cosClient;
 
     @Value("${cos.bucket-name}")
@@ -46,6 +47,7 @@ public class CosUtils {
         if (file == null || file.isEmpty()) {
             throw new RuntimeException("文件不能为空");
         }
+        ensureCosEnabled();
 
         try {
             // 获取原始文件名和扩展名
@@ -70,7 +72,7 @@ public class CosUtils {
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, fileName, inputStream, metadata);
 
             // 上传文件
-            PutObjectResult result = cosClient.putObject(putObjectRequest);
+            cosClient.putObject(putObjectRequest);
             log.info("文件上传成功: {}", fileName);
 
             // 返回文件访问URL
@@ -93,6 +95,10 @@ public class CosUtils {
         }
 
         try {
+            if (!isCosEnabled()) {
+                log.warn("文件删除跳过：COS 未启用");
+                return;
+            }
             // 从URL中提取文件key
             String fileKey = fileUrl.replace(baseUrl + "/", "");
             
@@ -117,11 +123,26 @@ public class CosUtils {
         }
 
         try {
+            if (!isCosEnabled()) {
+                return false;
+            }
             String fileKey = fileUrl.replace(baseUrl + "/", "");
             return cosClient.doesObjectExist(bucketName, fileKey);
         } catch (Exception e) {
             log.error("检查文件存在性失败", e);
             return false;
         }
+    }
+
+    private void ensureCosEnabled() {
+        if (!isCosEnabled()) {
+            throw new BusinessException("文件存储服务未启用，请配置 COS 后重试");
+        }
+    }
+
+    private boolean isCosEnabled() {
+        return cosClient != null
+                && StringUtils.hasText(bucketName)
+                && StringUtils.hasText(baseUrl);
     }
 }

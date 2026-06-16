@@ -44,7 +44,7 @@ backend/build/
 *.zip
 *.rar
 *.7z
-test/
+/test/
 thesis/
 *_副本/
 ~$*

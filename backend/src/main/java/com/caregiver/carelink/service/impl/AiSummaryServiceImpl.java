@@ -16,6 +16,7 @@ import com.caregiver.carelink.vo.ServicePackageVO;
 import dev.langchain4j.model.chat.ChatModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -39,7 +40,7 @@ public class AiSummaryServiceImpl implements AiSummaryService {
     /** 评价摘要缓存过期时间（秒），24 小时 */
     private static final long REVIEW_SUMMARY_TTL = 86400L;
 
-    @Resource
+    @Autowired(required = false)
     private ChatModel chatModel;
 
     @Resource
@@ -59,6 +60,9 @@ public class AiSummaryServiceImpl implements AiSummaryService {
 
     @Override
     public String getCaregiverReviewSummary(Long caregiverId) {
+        if (!isAiModelEnabled()) {
+            return aiDisabledMessage();
+        }
         if (caregiverId == null) {
             return "护工ID不能为空";
         }
@@ -142,6 +146,9 @@ public class AiSummaryServiceImpl implements AiSummaryService {
 
     @Override
     public String generateCareRecommendation(String description) {
+        if (!isAiModelEnabled()) {
+            return aiDisabledMessage();
+        }
         if (!StringUtils.hasText(description)) {
             return "请描述老人的基本情况，如年龄、健康状况、自理能力等，以便为您推荐合适的护理方案。";
         }
@@ -220,6 +227,10 @@ public class AiSummaryServiceImpl implements AiSummaryService {
     @Override
     @org.springframework.scheduling.annotation.Async("taskExecutor")
     public void refreshCaregiverReviewSummaryAsync(Long caregiverId) {
+        if (!isAiModelEnabled()) {
+            log.info("AI 模型未启用，跳过异步刷新护工评价摘要: caregiverId={}", caregiverId);
+            return;
+        }
         log.info("异步刷新护工评价摘要开始: caregiverId={}", caregiverId);
         try {
             // 不删除旧缓存，让用户在新摘要生成期间仍可查到旧摘要
@@ -304,5 +315,13 @@ public class AiSummaryServiceImpl implements AiSummaryService {
             case 6: return "母婴护理";
             default: return "其他";
         }
+    }
+
+    private boolean isAiModelEnabled() {
+        return chatModel != null;
+    }
+
+    private String aiDisabledMessage() {
+        return "AI助手未启用，请配置 AI_MODEL_ENABLED=true 和 AI_API_KEY 后重试。";
     }
 }

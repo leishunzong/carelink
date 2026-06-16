@@ -17,11 +17,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
@@ -43,13 +43,13 @@ public class AiController {
 
     private static final Logger log = LoggerFactory.getLogger(AiController.class);
 
-    @Resource
+    @Autowired(required = false)
     private CareAssistant careAssistant;
 
-    @Resource
+    @javax.annotation.Resource
     private AiConversationService aiConversationService;
 
-    @Resource
+    @javax.annotation.Resource
     private ServiceSubjectService serviceSubjectService;
 
     /**
@@ -64,6 +64,9 @@ public class AiController {
         String userMessage = buildUserMessage(dto);
 
         log.info("用户{}发起AI对话, conversationId={}, scene={}", userId, conversationId, dto.getScene());
+        if (!isAiEnabled()) {
+            return Result.fail("AI助手未启用，请配置 AI_MODEL_ENABLED=true 和 AI_API_KEY 后重试");
+        }
 
         // 绑定 conversationId -> userId，供异步线程中的工具方法获取用户身份
         CareBusinessTools.bindUser(conversationId, userId);
@@ -108,6 +111,16 @@ public class AiController {
         String userMessage = buildUserMessage(dto);
 
         log.info("用户{}发起流式AI对话, conversationId={}, scene={}", userId, conversationId, dto.getScene());
+        if (!isAiEnabled()) {
+            SseEmitter emitter = new SseEmitter(10_000L);
+            try {
+                emitter.send(SseEmitter.event().name("error").data("AI助手未启用，请配置 AI_MODEL_ENABLED=true 和 AI_API_KEY 后重试。"));
+                emitter.complete();
+            } catch (IOException e) {
+                emitter.completeWithError(e);
+            }
+            return emitter;
+        }
 
         // 绑定 conversationId -> userId，供异步线程中的工具方法获取用户身份
         CareBusinessTools.bindUser(conversationId, userId);
@@ -185,6 +198,10 @@ public class AiController {
         });
 
         return emitter;
+    }
+
+    private boolean isAiEnabled() {
+        return careAssistant != null;
     }
 
     /**

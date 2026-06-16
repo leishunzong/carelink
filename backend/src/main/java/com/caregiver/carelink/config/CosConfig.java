@@ -5,6 +5,7 @@ import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.region.Region;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,7 @@ public class CosConfig {
     private String region;
 
     @Bean
+    @ConditionalOnProperty(prefix = "cos", name = "enabled", havingValue = "true")
     public COSClient cosClient() {
         // 初始化用户身份信息
         COSCredentials cred = new BasicCOSCredentials(secretId, secretKey);

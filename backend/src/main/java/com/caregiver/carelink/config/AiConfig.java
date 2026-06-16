@@ -21,6 +21,8 @@ import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.memory.chat.ChatMemoryStore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -55,6 +57,7 @@ public class AiConfig {
     // ========================= 模型 =========================
 
     @Bean
+    @ConditionalOnProperty(prefix = "ai.model", name = "enabled", havingValue = "true")
     public StreamingChatModel streamingChatModel() {
         AiProperties.ModelConfig model = aiProperties.getModel();
         log.info("初始化AI流式聊天模型: baseUrl={}, model={}", model.getBaseUrl(), model.getModelName());
@@ -75,6 +78,7 @@ public class AiConfig {
      * 同步聊天模型（用于工具内部调用，如 AI 评价摘要、智能推荐等）
      */
     @Bean
+    @ConditionalOnProperty(prefix = "ai.model", name = "enabled", havingValue = "true")
     public ChatModel chatModel() {
         AiProperties.ModelConfig model = aiProperties.getModel();
         log.info("初始化AI同步聊天模型（用于内部工具调用）: baseUrl={}, model={}", model.getBaseUrl(), model.getModelName());
@@ -143,6 +147,7 @@ public class AiConfig {
     // ========================= AI 助手（统一装配） =========================
 
     @Bean
+    @ConditionalOnBean(StreamingChatModel.class)
     public CareAssistant careAssistant(StreamingChatModel streamingChatModel,
                                        ChatMemoryProvider chatMemoryProvider,
                                        ContentRetriever contentRetriever,
